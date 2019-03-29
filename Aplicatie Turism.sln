@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Aplicatie Turism", "Aplicatie Turism\Aplicatie Turism.vcxproj", "{B715759B-74DE-4E2B-9320-28620A475D7F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3609FE4C-BDA5-45DC-9B16-5DAE032C0621}"
+	ProjectSection(SolutionItems) = preProject
+		packages.xsd = packages.xsd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
