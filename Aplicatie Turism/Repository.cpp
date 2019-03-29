@@ -41,3 +41,13 @@ void Repository::update(const Offer& offer) {
 	this->deleteElement(offer.getId());
 	this->store(offer);
 }
+
+int Repository::getMaxId() const {
+	int maxId = 0;
+	for (const auto& item : items) {
+		if (item.getId() > maxId){
+			maxId = item.getId();
+		}
+	}
+	return maxId;
+}

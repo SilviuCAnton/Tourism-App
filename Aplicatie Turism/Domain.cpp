@@ -1,9 +1,7 @@
 #include "Domain.h"
 
-Offer::Offer(std::string name, std::string destination, std::string type, double price) : id{++nextId}, name{ name }, destination{ destination }, type{ type }, price{ price } {
+Offer::Offer(int id, std::string name, std::string destination, std::string type, double price) : id{id}, name{ name }, destination{ destination }, type{ type }, price{ price } {
 }
-
-int Offer::nextId{ 0 };
 
 int Offer::getId() const {
 	return id;

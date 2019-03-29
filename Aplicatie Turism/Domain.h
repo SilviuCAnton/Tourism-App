@@ -5,7 +5,6 @@
 
 class Offer {
 private:
-	static int nextId;
 	int id;
 	std::string name;
 	std::string destination;
@@ -25,7 +24,7 @@ public:
 	Out:
 		- offer - the generated offer
 	*/
-	Offer(std::string, std::string, std::string, double);
+	Offer(int, std::string, std::string, std::string, double);
 
 	/*
 	Description: getter for the id

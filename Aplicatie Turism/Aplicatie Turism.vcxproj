@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClInclude Include="Domain.h" />
     <ClInclude Include="Repository.h" />
+    <ClInclude Include="Service.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

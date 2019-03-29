@@ -2,6 +2,8 @@
 #include <vector>
 #include "Domain.h"
 
+//Module for data storage
+
 class Repository {
 private:
 	std::vector<Offer> items;
@@ -40,7 +42,7 @@ public:
 	int size() const;
 
 	/*
-	Description: returns a list of all the offers inside the repository
+	Description: returns a copy of the list of all the offers inside the repository
 
 	Out:
 		- offers - the offer list
@@ -65,4 +67,12 @@ public:
 		- offer - an offer with the id of the offer we want to update
 	*/
 	void update(const Offer&);
+
+	/*
+	Description: returns the maximum id used already for an offer in the repository
+
+	Out:
+		- maxID - the max id used
+	*/
+	int getMaxId() const;
 };
