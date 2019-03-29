@@ -5,6 +5,8 @@
 
 class Offer {
 private:
+	static int nextId;
+	int id;
 	std::string name;
 	std::string destination;
 	std::string type;
@@ -14,6 +16,7 @@ public:
 	Description: offer constructor
 
 	In:
+		- id - id of the offer
 		- name - name of the offer
 		- destination - trip destination
 		- type - offer type
@@ -23,6 +26,14 @@ public:
 		- offer - the generated offer
 	*/
 	Offer(std::string, std::string, std::string, double);
+
+	/*
+	Description: getter for the id
+
+	Out:
+		- id - returns the id of the offer
+	*/
+	int getId() const;
 
 	/*
 	Description: getter for the name
