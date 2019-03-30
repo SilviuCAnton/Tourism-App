@@ -1,12 +1,14 @@
 #pragma once
 #include "Repository.h"
 #include "Domain.h"
+#include "Validator.h"
 
 //Module for the main functionalities of the app (GRASP Controller)
 
 class Service {
 private:
 	Repository repository;
+	OfferValidator validator;
 public:
 	/*
 	Description: adds an offer given a name, a destination, a type and a price

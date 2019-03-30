@@ -1,6 +1,6 @@
 #include "Repository.h"
 #include <iterator>
-#include <exception>
+#include "Exceptions.h"
 
 void Repository::store(const Offer& offer) {
 	items.push_back(offer);
@@ -16,12 +16,12 @@ void Repository::deleteElement(int id) {
 		index++;
 	}
 	if (index == items.size()) {
-		throw std::invalid_argument("Elementul cu id-ul dat nu exista!!");
+		throw InexistentItemException("Elementul cu id-ul dat nu exista!!");
 	}
 }
 
 int Repository::size() const noexcept{
-	return items.size();
+	return (int) items.size();
 }
 
 std::vector<Offer> Repository::getAll() const {
@@ -34,7 +34,7 @@ Offer Repository::getElement(int id) const{
 			return elem;
 		}
 	}
-	throw std::invalid_argument("Elementul cu id-ul dat nu exista!!");
+	throw InexistentItemException("Elementul cu id-ul dat nu exista!!");
 }
 
 void Repository::update(const Offer& offer) {

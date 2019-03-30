@@ -97,4 +97,11 @@ public:
 		- price - sets the price of the offer
 	*/
 	void setPrice(double) noexcept;
+
+	/*
+	Description: == operator overload
+
+	Out: returns true if 2 offers are considered equal(name, destination and type are the same);
+	*/
+	bool operator==(const Offer&) const;
 };
