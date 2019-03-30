@@ -39,7 +39,7 @@ public:
 	Out:
 		- size - the size of the repo
 	*/
-	int size() const;
+	int size() const noexcept;
 
 	/*
 	Description: returns a copy of the list of all the offers inside the repository
@@ -74,5 +74,5 @@ public:
 	Out:
 		- maxID - the max id used
 	*/
-	int getMaxId() const;
+	int getMaxId() const noexcept;
 };

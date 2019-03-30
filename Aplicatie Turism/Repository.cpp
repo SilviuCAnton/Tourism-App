@@ -20,7 +20,7 @@ void Repository::deleteElement(int id) {
 	}
 }
 
-int Repository::size() const {
+int Repository::size() const noexcept{
 	return items.size();
 }
 
@@ -42,7 +42,7 @@ void Repository::update(const Offer& offer) {
 	this->store(offer);
 }
 
-int Repository::getMaxId() const {
+int Repository::getMaxId() const noexcept{
 	int maxId = 0;
 	for (const auto& item : items) {
 		if (item.getId() > maxId){

@@ -32,7 +32,7 @@ public:
 	Out:
 		- id - returns the id of the offer
 	*/
-	int getId() const;
+	int getId() const noexcept;
 
 	/*
 	Description: getter for the name
@@ -64,7 +64,7 @@ public:
 	Out:
 		- price - returns the price of the offer
 	*/
-	double getPrice() const;
+	double getPrice() const noexcept;
 
 	/*
 	Description: setter for the name
@@ -96,5 +96,5 @@ public:
 	In:
 		- price - sets the price of the offer
 	*/
-	void setPrice(double);
+	void setPrice(double) noexcept;
 };
