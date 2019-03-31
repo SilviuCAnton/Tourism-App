@@ -10,7 +10,7 @@ int main() {
 		Repository myRepo{};
 		Service myService{ myRepo, myValidator };
 		Console myConsole{ myService };
-		//myConsole.run();
+		myConsole.run();
 	}
 	_CrtDumpMemoryLeaks();
 	return 0;

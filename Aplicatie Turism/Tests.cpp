@@ -163,5 +163,6 @@ namespace FunctionalityTest {
 		testFind();
 		testFilters();
 		testSortings();
+		system("cls");
 	}
 }
