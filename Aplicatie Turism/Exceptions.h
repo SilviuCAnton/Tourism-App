@@ -9,7 +9,7 @@ private:
 public:
 	ValidException(std::string m) : message{ m } {
 	}
-	friend std::ostream& operator<<(std::ostream& out, ValidException& err);
+	friend std::ostream& operator<<(std::ostream& out, const ValidException& err);
 };
 
 class DuplicateItemException {
@@ -18,7 +18,7 @@ private:
 public:
 	DuplicateItemException(std::string m) : message{ m } {
 	}
-	friend std::ostream& operator<<(std::ostream& out, DuplicateItemException& err);
+	friend std::ostream& operator<<(std::ostream& out, const DuplicateItemException& err);
 };
 
 class InexistentItemException {
@@ -27,5 +27,5 @@ private:
 public:
 	InexistentItemException(std::string m) : message{ m } {
 	}
-	friend std::ostream& operator<<(std::ostream& out, InexistentItemException& err);
+	friend std::ostream& operator<<(std::ostream& out, const InexistentItemException& err);
 };

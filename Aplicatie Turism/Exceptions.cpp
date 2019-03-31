@@ -1,16 +1,16 @@
 #include "Exceptions.h"
 
-std::ostream& operator<<(std::ostream& out, ValidException& err) {
+std::ostream& operator<<(std::ostream& out, const ValidException& err) {
 	out << err.message;
 	return out;
 }
 
-std::ostream& operator<<(std::ostream& out, DuplicateItemException& err) {
+std::ostream& operator<<(std::ostream& out, const DuplicateItemException& err) {
 	out << err.message;
 	return out;
 }
 
-std::ostream& operator<<(std::ostream& out, InexistentItemException& err) {
+std::ostream& operator<<(std::ostream& out, const InexistentItemException& err) {
 	out << err.message;
 	return out;
 }

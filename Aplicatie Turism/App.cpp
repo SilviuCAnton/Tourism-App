@@ -1,6 +1,15 @@
 //Main module of the app
-#include <math.h>
+#include "Console.h"
+#define _CRTDBG_MAP_ALLOC
 
-int main() noexcept {
+int main() {
+	{
+		OfferValidator myValidator{};
+		Repository myRepo{};
+		Service myService{ myRepo, myValidator };
+		Console myConsole{ myService };
+		myConsole.run();
+	}
+	_CrtDumpMemoryLeaks();
 	return 0;
 }

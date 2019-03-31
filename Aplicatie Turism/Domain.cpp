@@ -42,3 +42,8 @@ void Offer::setPrice(double newPrice) noexcept{
 bool Offer::operator==(const Offer& otherOffer) const {
 	return name == otherOffer.name && type == otherOffer.type && destination == otherOffer.destination;
 }
+
+std::ostream& operator<<(std::ostream& out, const Offer& offer) {
+	out << offer.getId() << ' ' << offer.getName() << ' ' << offer.getDestination() << ' ' << offer.getType() << ' ' << offer.getPrice();
+	return out;
+}

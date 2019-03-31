@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="Repository.cpp" />
@@ -137,6 +138,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Domain.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Repository.h" />

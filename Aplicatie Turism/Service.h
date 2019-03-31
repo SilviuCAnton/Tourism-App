@@ -11,6 +11,11 @@ private:
 	OfferValidator validator;
 public:
 	/*
+	Description: service constructor
+	*/
+	Service(const Repository&, const OfferValidator&);
+
+	/*
 	Description: adds an offer given a name, a destination, a type and a price
 
 	In:

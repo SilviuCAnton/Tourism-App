@@ -104,4 +104,7 @@ public:
 	Out: returns true if 2 offers are considered equal(name, destination and type are the same);
 	*/
 	bool operator==(const Offer&) const;
+
+	//Print representation
+	friend std::ostream& operator<<(std::ostream& out, const Offer& offer);
 };

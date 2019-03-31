@@ -11,6 +11,7 @@ void Repository::deleteElement(int id) {
 	for (auto& elem : items) {
 		if (elem.getId() == id) {
 			items.erase(items.begin() + index);
+			index = -1;
 			break;
 		}
 		index++;
