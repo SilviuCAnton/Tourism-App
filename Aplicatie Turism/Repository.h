@@ -34,14 +34,6 @@ public:
 	void deleteElement(int);
 
 	/*
-	Description: returns the size of the repository
-
-	Out:
-		- size - the size of the repo
-	*/
-	int size() const noexcept;
-
-	/*
 	Description: returns a copy of the list of all the offers inside the repository
 
 	Out:

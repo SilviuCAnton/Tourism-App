@@ -132,6 +132,7 @@
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="Repository.cpp" />
     <ClCompile Include="Service.cpp" />
+    <ClCompile Include="Tests.cpp" />
     <ClCompile Include="Validator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +144,7 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Repository.h" />
     <ClInclude Include="Service.h" />
+    <ClInclude Include="Tests.h" />
     <ClInclude Include="Validator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

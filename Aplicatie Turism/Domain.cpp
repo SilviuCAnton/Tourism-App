@@ -23,27 +23,11 @@ double Offer::getPrice() const noexcept {
 	return price;
 }
 
-void Offer::setName(std::string newName) {
-	this->name = newName;
-}
-
-void Offer::setDestination(std::string newDestination) {
-	this->destination = newDestination;
-}
-
-void Offer::setType(std::string newType) {
-	this->type = newType;
-}
-
-void Offer::setPrice(double newPrice) noexcept{
-	this->price = newPrice;
-}
-
 bool Offer::operator==(const Offer& otherOffer) const {
 	return name == otherOffer.name && type == otherOffer.type && destination == otherOffer.destination;
 }
 
 std::ostream& operator<<(std::ostream& out, const Offer& offer) {
-	out << offer.getId() << ' ' << offer.getName() << ' ' << offer.getDestination() << ' ' << offer.getType() << ' ' << offer.getPrice();
+	out << offer.getId() << '-' << offer.getName() << '-' << offer.getDestination() << '-' << offer.getType() << '-' << offer.getPrice();
 	return out;
 }

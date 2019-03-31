@@ -21,21 +21,8 @@ void Repository::deleteElement(int id) {
 	}
 }
 
-int Repository::size() const noexcept{
-	return (int) items.size();
-}
-
 std::vector<Offer> Repository::getAll() const {
 	return items;
-}
-
-Offer Repository::getElement(int id) const{
-	for (auto& elem : items) {
-		if (elem.getId() == id) {
-			return elem;
-		}
-	}
-	throw InexistentItemException("Elementul cu id-ul dat nu exista!!");
 }
 
 void Repository::update(const Offer& offer) {
