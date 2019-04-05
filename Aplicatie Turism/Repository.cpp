@@ -21,7 +21,7 @@ void Repository::deleteElement(int id) {
 	}
 }
 
-std::vector<Offer> Repository::getAll() const {
+const std::vector<Offer>& Repository::getAll() const {
 	return items;
 }
 

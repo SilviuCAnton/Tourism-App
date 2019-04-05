@@ -23,6 +23,10 @@ public:
 		- destination - the destination of the trip
 		- type - the type of the offer
 		- price - the money cost
+
+	Exceptions:
+		- throws DuplicateItemException if the offer already exists
+		- throws ValidException if the offer is not valid
 	*/
 	void addOffer(std::string, std::string, std::string, double);
 
@@ -35,6 +39,10 @@ public:
 		- destination - the destination of the trip
 		- type - the type of the offer
 		- price - the money cost
+
+	Exceptions:
+		- throws DuplicateItemException if the offer already exists
+		- throws ValidException if the offer is not valid
 	*/
 	void modifyOffer(int, std::string, std::string, std::string, double);
 
@@ -52,7 +60,7 @@ public:
 	Out: 
 		- offers - offer list
 	*/
-	std::vector<Offer> getAllOffers() const;
+	const std::vector<Offer>& getAllOffers() const;
 
 	/*
 	Description: finds all the offers with names mactching a sequence of characters 

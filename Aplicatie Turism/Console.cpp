@@ -263,6 +263,9 @@ void Console::run() {
 		case 9:
 			sortByTypeAndPriceUI();
 			break;
+		case 10:
+			printList(service.getAllOffers());
+			break;
 		default:
 			std::cout << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;
 			break;

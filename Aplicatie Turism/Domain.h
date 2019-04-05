@@ -26,6 +26,8 @@ public:
 	*/
 	Offer(int, std::string, std::string, std::string, double);
 
+	Offer(const Offer& ot);
+
 	/*
 	Description: getter for the id
 

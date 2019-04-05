@@ -11,7 +11,7 @@ void Service::addOffer(std::string name, std::string destination, std::string ty
 
 	this->validator.validate(newOffer);
 
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
 	for (const auto& offer : offers) {
 		if (offer == newOffer) {
 			throw DuplicateItemException("Oferta exista deja!!!");
@@ -26,7 +26,7 @@ void Service::modifyOffer(int id, std::string name, std::string destination, std
 
 	this->validator.validate(newOffer);
 
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
 	for (const auto& offer : offers) {
 		if (offer == newOffer) {
 			throw DuplicateItemException("Oferta exista deja!!!");
@@ -40,13 +40,13 @@ void Service::removeOffer(int id) {
 	this->repository.deleteElement(id);
 }
 
-std::vector<Offer> Service::getAllOffers() const {
+const std::vector<Offer>& Service::getAllOffers() const {
 	return this->repository.getAll();
 }
 
 std::vector<Offer> Service::findByName(std::string sequence) const {
 	std::vector<Offer> filteredOffers;
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
 
 	std::for_each(offers.begin(), offers.end(), [&filteredOffers, &sequence](const auto& offer) {
 		if (offer.getName().find(sequence) != std::string::npos) {
@@ -58,7 +58,7 @@ std::vector<Offer> Service::findByName(std::string sequence) const {
 
 std::vector<Offer> Service::filterByDestination(std::string destination) const {
 	std::vector<Offer> filteredOffers;
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
 
 	std::for_each(offers.begin(), offers.end(), [&filteredOffers, &destination](const auto& offer) {
 		if (offer.getDestination() == destination)
@@ -69,7 +69,7 @@ std::vector<Offer> Service::filterByDestination(std::string destination) const {
 
 std::vector<Offer> Service::filterByPrice(double price) const {
 	std::vector<Offer> filteredOffers;
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
 
 	std::for_each(offers.begin(), offers.end(), [&filteredOffers, &price](const auto& offer) {
 		if (offer.getPrice() <= price)
@@ -79,31 +79,34 @@ std::vector<Offer> Service::filterByPrice(double price) const {
 }
 
 std::vector<Offer> Service::sortByName() const {
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
+	std::vector<Offer> copyOffers = offers;
 
-	std::sort(offers.begin(), offers.end(), [](const auto& offer1, const auto& offer2) {
+	std::sort(copyOffers.begin(), copyOffers.end(), [](const auto& offer1, const auto& offer2) {
 		return offer1.getName() < offer2.getName();
 	});
-	return offers;
+	return copyOffers;
 }
 
 std::vector<Offer> Service::sortByDestination() const {
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
+	std::vector<Offer> copyOffers = offers;
 
-	std::sort(offers.begin(), offers.end(), [](const auto& offer1, const auto& offer2) {
+	std::sort(copyOffers.begin(), copyOffers.end(), [](const auto& offer1, const auto& offer2) {
 		return offer1.getDestination() < offer2.getDestination();
 	});
-	return offers;
+	return copyOffers;
 }
 
 std::vector<Offer> Service::sortByTypeAndPrice() const {
-	std::vector<Offer> offers = this->repository.getAll();
+	const std::vector<Offer>& offers = this->repository.getAll();
+	std::vector<Offer> copyOffers = offers;
 
-	std::sort(offers.begin(), offers.end(), [](const auto& offer1, const auto& offer2) {
+	std::sort(copyOffers.begin(), copyOffers.end(), [](const auto& offer1, const auto& offer2) {
 		if (offer1.getType() != offer2.getType()) {
 			return offer1.getType() < offer2.getType();
 		}
 		return offer1.getPrice() > offer2.getPrice();
 	});
-	return offers;
+	return copyOffers;
 }

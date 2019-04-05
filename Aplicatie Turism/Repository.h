@@ -30,6 +30,9 @@ public:
 	In:
 		- name - name of the offer
 		- type - type of the offer
+
+	Exceptions:
+		- throws InexistentItemException if the offer does not exist
 	*/
 	void deleteElement(int);
 
@@ -39,18 +42,7 @@ public:
 	Out:
 		- offers - the offer list
 	*/
-	std::vector<Offer> getAll() const;
-
-	/*
-	Description: returns an offer from the repo, given an id
-
-	In:
-		- id - id of the offer we want
-
-	Out:
-		- offer - the returned offer
-	*/
-	Offer getElement(int) const;
+	const std::vector<Offer>& getAll() const;
 
 	/*
 	Description: updates an offer in the repository
