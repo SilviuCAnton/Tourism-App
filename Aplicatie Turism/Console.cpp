@@ -22,7 +22,7 @@ void Console::displayMenu() const {
 	std::cout << "Introduceti o optiune: ";
 }
 
-void Console::printList(const std::vector<Offer>& offers) const {
+void Console::printList(const List<Offer>& offers) const {
 	std::cout << std::endl;
 	std::cout << "Offers:" << std::endl;
 	for (const auto& offer : offers) {
@@ -31,7 +31,7 @@ void Console::printList(const std::vector<Offer>& offers) const {
 	std::cout << std::endl;
 }
 
-void Console::printResultList(const std::vector<Offer>& offers) const {
+void Console::printResultList(const List<Offer>& offers) const {
 	std::cout << std::endl;
 	std::cout << "Result:" << std::endl;
 	for (const auto& offer : offers) {
@@ -139,7 +139,7 @@ void Console::findByNameUI() const {
 		if (name.size() == 0)
 			throw std::domain_error("Nume nu poate fi vid!!!");
 
-		std::vector<Offer> foundOffers = service.findByName(name);
+		List<Offer> foundOffers = service.findByName(name);
 		if (foundOffers.size() == 0) {
 			std::cout << std::endl << "Nu sunt oferete cu numele dat!!!" << std::endl << std::endl;
 		}
@@ -160,7 +160,7 @@ void Console::filterByDestinationUI() const {
 		if (destination.size() == 0)
 			throw std::domain_error("Destinatie nu poate fi vida!!!");
 
-		std::vector<Offer> filteredOffers = service.filterByDestination(destination);
+		List<Offer> filteredOffers = service.filterByDestination(destination);
 		if (filteredOffers.size() == 0) {
 			std::cout << std::endl << "Nu sunt oferete cu destinatia data!!!" << std::endl << std::endl;
 		}
@@ -184,7 +184,7 @@ void Console::filterByPriceUI() const {
 			throw std::domain_error("Input nevalid!!!");
 		}
 
-		std::vector<Offer> filteredOffers = service.filterByPrice(price);
+		List<Offer> filteredOffers = service.filterByPrice(price);
 		if (filteredOffers.size() == 0) {
 			std::cout << std::endl << "Nu sunt oferete cu pretul dat!!!" << std::endl << std::endl;
 		}
@@ -198,17 +198,17 @@ void Console::filterByPriceUI() const {
 }
 
 void Console::sortByNameUI() const {
-	std::vector<Offer> sortedOffers = service.sortByName();
+	const List<Offer>& sortedOffers = service.sortByName();
 	printResultList(sortedOffers);
 }
 
 void Console::sortByDestinationUI() const {
-	std::vector<Offer> sortedOffers = service.sortByDestination();
+	List<Offer> sortedOffers = service.sortByDestination();
 	printResultList(sortedOffers);
 }
 
 void Console::sortByTypeAndPriceUI() const {
-	std::vector<Offer> sortedOffers = service.sortByTypeAndPrice();
+	List<Offer> sortedOffers = service.sortByTypeAndPrice();
 	printResultList(sortedOffers);
 }
 

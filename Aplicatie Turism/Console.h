@@ -4,8 +4,8 @@
 class Console {
 private:
 	Service service;
-	void printList(const std::vector<Offer>&) const;
-	void printResultList(const std::vector<Offer>& offers) const;
+	void printList(const List<Offer>&) const;
+	void printResultList(const List<Offer>& offers) const;
 	void displayMenu() const;
 	void addOfferUI();
 	void modifyOfferUI();

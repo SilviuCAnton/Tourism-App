@@ -60,7 +60,7 @@ public:
 	Out: 
 		- offers - offer list
 	*/
-	const std::vector<Offer>& getAllOffers() const;
+	const List<Offer>& getAllOffers() const;
 
 	/*
 	Description: finds all the offers with names mactching a sequence of characters 
@@ -68,7 +68,7 @@ public:
 	In: 
 		- sequence - sequence of characters
 	*/
-	std::vector<Offer> findByName(std::string) const;
+	List<Offer> findByName(std::string) const;
 
 	/*
 	Description: filters the offers by destination
@@ -76,7 +76,7 @@ public:
 	In:
 		- destination - the destination to filter by
 	*/
-	std::vector<Offer> filterByDestination(std::string) const;
+	List<Offer> filterByDestination(std::string) const;
 
 	/*
 	Description: filters the offers by price
@@ -84,20 +84,20 @@ public:
 	In:
 		- price - the price to filter by
 	*/
-	std::vector<Offer> filterByPrice(double) const;
+	List<Offer> filterByPrice(double) const;
 
 	/*
 	Description: sorts the offers by name
 	*/
-	std::vector<Offer> sortByName() const;
+	List<Offer> sortByName() const;
 
 	/*
 	Description: sorts the offers by destination
 	*/
-	std::vector<Offer> sortByDestination() const;
+	List<Offer> sortByDestination() const;
 
 	/*
 	Description: sorts the offers by type and price
 	*/
-	std::vector<Offer> sortByTypeAndPrice() const;
+	List<Offer> sortByTypeAndPrice() const;
 };

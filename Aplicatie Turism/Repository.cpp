@@ -8,9 +8,9 @@ void Repository::store(const Offer& offer) {
 
 void Repository::deleteElement(int id) {
 	int index{ 0 };
-	for (auto& elem : items) {
+	for (const auto& elem : items) {
 		if (elem.getId() == id) {
-			items.erase(items.begin() + index);
+			items.remove(items.begin() + index);
 			index = -1;
 			break;
 		}
@@ -21,7 +21,7 @@ void Repository::deleteElement(int id) {
 	}
 }
 
-const std::vector<Offer>& Repository::getAll() const {
+const List<Offer>& Repository::getAll() const {
 	return items;
 }
 

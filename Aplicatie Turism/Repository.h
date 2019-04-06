@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include "Domain.h"
+#include "MyList.h"
 
 //Module for data storage
 
 class Repository {
 private:
-	std::vector<Offer> items;
+	List<Offer> items;
 public:
 	/*
 	Description: repository constructor
@@ -42,7 +43,7 @@ public:
 	Out:
 		- offers - the offer list
 	*/
-	const std::vector<Offer>& getAll() const;
+	const List<Offer>& getAll() const;
 
 	/*
 	Description: updates an offer in the repository

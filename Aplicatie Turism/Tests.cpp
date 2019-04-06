@@ -108,7 +108,7 @@ namespace FunctionalityTest {
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
 		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
 		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
-		std::vector<Offer> result = myService.findByName("fert");
+		List<Offer> result = myService.findByName("fert");
 		assert(result.size() == 2);
 		result = myService.findByName("canta");
 		assert(result.size() == 3);
@@ -125,7 +125,7 @@ namespace FunctionalityTest {
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
 		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
 		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
-		std::vector<Offer> result = myService.filterByDestination("Dubai");
+		List<Offer> result = myService.filterByDestination("Dubai");
 		assert(result.size() == 2);
 		result = myService.filterByDestination("New York");
 		assert(result.size() == 1);
@@ -143,12 +143,12 @@ namespace FunctionalityTest {
 		Repository myRepo{};
 		OfferValidator myValidator{};
 		Service myService{ myRepo, myValidator };
-		myService.addOffer("Oferta1", "Bali", "type1", 250);
-		myService.addOffer("Oferta2", "Bali", "type2", 500.24);
+		myService.addOffer("Oferta2", "Bali", "type2", 250);
+		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
 		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
 		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
-		std::vector<Offer> result = myService.sortByName();
+		List<Offer> result = myService.sortByName();
 		assert(result[0].getName() == "Oferta1" && result[2].getDestination() == "New York" && result[4].getName() == "Vacanta3");
 		result = myService.sortByDestination();
 		assert(result[0].getDestination() == "Bali" && result[4].getDestination() == "New York");

@@ -5,6 +5,7 @@ Offer::Offer(int id, std::string name, std::string destination, std::string type
 }
 
 Offer::Offer(const Offer& ot) : id{ ot.id }, name{ ot.name }, destination{ ot.destination }, type{ ot.type }, price{ ot.price } {
+	std::cout << "copy" << std::endl;
 }
 
 int Offer::getId() const noexcept {
