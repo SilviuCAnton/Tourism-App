@@ -177,23 +177,20 @@ template <typename T> void List<T>::clear() {
 }
 
 template <typename T> typename List<T>::Node* List<T>::copy() const {
-	if (head == nullptr)
+	if (head == nullptr) {
 		return nullptr;
-	else
-	{
-		Node *newHead = new Node(head->getValue(), nullptr);
-		Node *curNode = head->getNext();
-		Node *newCrt = newHead;
-		Node *temp;
-		while (curNode != nullptr)
-		{
-			temp = new Node(curNode->getValue(), nullptr);
-			newCrt->setNext(temp);
-			newCrt = temp;
-			curNode = curNode->getNext();
-		}
-		return newHead;
 	}
+	Node *newHead = new Node(head->getValue(), nullptr);
+	Node *curNode = head->getNext();
+	Node *newCrt = newHead;
+	Node *temp;
+	while (curNode != nullptr) {
+		temp = new Node(curNode->getValue(), nullptr);
+		newCrt->setNext(temp);
+		newCrt = temp;
+		curNode = curNode->getNext();
+	}
+	return newHead;
 }
 
 template < typename T > List<T>::List() {

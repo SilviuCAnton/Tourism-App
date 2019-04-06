@@ -7,19 +7,6 @@
 
 int main() {
 	{
-		List<int> myList{};
-		myList.insert(0, 5);
-		myList.insert(0, 4);
-		for (auto x : myList) {
-			std::cout << x;
-		}
-		myList.remove(myList.begin());
-		if (myList.size() != 1)
-			return 0;
-		myList.remove(myList.begin());
-		if (!myList.isEmpty()) {
-			return 0;
-		}
 		FunctionalityTest::testAll();
 		OfferValidator myValidator{};
 		Repository myRepo{};
