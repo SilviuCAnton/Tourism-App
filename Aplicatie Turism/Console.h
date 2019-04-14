@@ -4,8 +4,8 @@
 class Console {
 private:
 	Service service;
-	void printList(const List<Offer>&) const;
-	void printResultList(const List<Offer>& offers) const;
+	void printList(const std::vector<Offer>&) const;
+	void printResultList(const std::vector<Offer>& offers) const;
 	void displayMenu() const;
 	void addOfferUI();
 	void modifyOfferUI();
@@ -16,6 +16,10 @@ private:
 	void sortByNameUI() const;
 	void sortByDestinationUI() const;
 	void sortByTypeAndPriceUI() const;
+	void addToWishlistUI();
+	void emptyWishlistUI();
+	void populateWishlistUI();
+	void printWishlist(const std::vector<Offer>& offers) const;
 public:
 	Console(const Service&);
 	void run();

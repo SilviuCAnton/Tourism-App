@@ -2,6 +2,7 @@
 #include "Repository.h"
 #include "Domain.h"
 #include "Validator.h"
+#include "Wishlist.h"
 
 //Module for the main functionalities of the app (GRASP Controller)
 
@@ -9,11 +10,12 @@ class Service {
 private:
 	Repository repository;
 	OfferValidator validator;
+	Wishlist wishlist;
 public:
 	/*
 	Description: service constructor
 	*/
-	Service(const Repository&, const OfferValidator&);
+	Service(const Repository&, const OfferValidator&, const Wishlist&);
 
 	/*
 	Description: adds an offer given a name, a destination, a type and a price
@@ -60,7 +62,7 @@ public:
 	Out: 
 		- offers - offer list
 	*/
-	const List<Offer>& getAllOffers() const;
+	const std::vector<Offer>& getAllOffers() const noexcept;
 
 	/*
 	Description: finds all the offers with names mactching a sequence of characters 
@@ -68,7 +70,7 @@ public:
 	In: 
 		- sequence - sequence of characters
 	*/
-	List<Offer> findByName(std::string) const;
+	std::vector<Offer> findByName(std::string) const;
 
 	/*
 	Description: filters the offers by destination
@@ -76,7 +78,7 @@ public:
 	In:
 		- destination - the destination to filter by
 	*/
-	List<Offer> filterByDestination(std::string) const;
+	std::vector<Offer> filterByDestination(std::string) const;
 
 	/*
 	Description: filters the offers by price
@@ -84,20 +86,43 @@ public:
 	In:
 		- price - the price to filter by
 	*/
-	List<Offer> filterByPrice(double) const;
+	std::vector<Offer> filterByPrice(double) const;
 
 	/*
 	Description: sorts the offers by name
 	*/
-	List<Offer> sortByName() const;
+	std::vector<Offer> sortByName() const;
 
 	/*
 	Description: sorts the offers by destination
 	*/
-	List<Offer> sortByDestination() const;
+	std::vector<Offer> sortByDestination() const;
 
 	/*
 	Description: sorts the offers by type and price
 	*/
-	List<Offer> sortByTypeAndPrice() const;
+	std::vector<Offer> sortByTypeAndPrice() const;
+
+	/*
+	Description: adds an offer to wishlist, given an offer id
+	*/
+	void addToWishlist(int);
+
+	/*
+	Description: empties the wishlist
+	*/
+	void emptyWishlist() noexcept;
+
+	/*
+	Description: populates the wishlist with a number of random offers
+	*/
+	void populateWishlist(int);
+
+	/*
+	Description: returns a list of all the offers in the wishlist
+
+	Out:
+		- wishlist - offer list
+	*/
+	const std::vector<Offer>& getWishlist() const noexcept;
 };

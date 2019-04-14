@@ -7,7 +7,7 @@
 
 class Repository {
 private:
-	List<Offer> items;
+	std::vector<Offer> items;
 public:
 	/*
 	Description: repository constructor
@@ -43,7 +43,7 @@ public:
 	Out:
 		- offers - the offer list
 	*/
-	const List<Offer>& getAll() const;
+	const std::vector<Offer>& getAll() const noexcept;
 
 	/*
 	Description: updates an offer in the repository

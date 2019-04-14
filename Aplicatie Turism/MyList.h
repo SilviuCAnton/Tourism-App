@@ -33,7 +33,7 @@ private:
 		}
 
 		//Geter for next node
-		Node* getNext() const{
+		Node* getNext() const {
 			return next;
 		}
 
@@ -299,7 +299,7 @@ template < typename T > void List<T>::insert(int position, T e) {
 		j++;
 	}
 	Node *p = new Node(e, curNode);
-	if (prec != nullptr){
+	if (prec != nullptr) {
 		prec->setNext(p);
 	}
 	else {
@@ -331,7 +331,7 @@ template < typename T > T List<T>::remove(const Iterator<T>& position)
 		curNode = curNode->getNext();
 	}
 
-	if (prev != nullptr){ 
+	if (prev != nullptr) {
 		prev->setNext(curNode->getNext());
 	}
 	else {

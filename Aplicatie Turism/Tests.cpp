@@ -2,23 +2,25 @@
 #include "Service.h"
 #include <assert.h>
 #include "Exceptions.h"
+#include "Wishlist.h"
 #include <iostream>
 
 namespace FunctionalityTest {
 	void testAdd() {
 		Repository myRepo{};
 		OfferValidator myValidator{};
-		Service myService{ myRepo, myValidator };
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
 		myService.addOffer("Oferta1", "Bali", "type1", 500);
 		myService.addOffer("Oferta2", "Bali", "type1", 500);
-		assert(std::cout << myService.getAllOffers()[0]);
+		assert(std::cout << myService.getAllOffers().at(0));
 		std::cout.clear();
 		assert(myService.getAllOffers().size() == 2);
 		try {
 			myService.addOffer("Oferta2", "Bali", "type1", 500);
 			assert(false);
 		}
-		catch (DuplicateItemException& de) {
+		catch (const DuplicateItemException& de) {
 			assert(std::cout << de);
 			std::cout.clear();
 		}
@@ -26,7 +28,7 @@ namespace FunctionalityTest {
 			myService.addOffer("sfsdf", "sdsdf", "", 500);
 			assert(false);
 		}
-		catch (ValidException& ve) {
+		catch (const ValidException& ve) {
 			assert(std::cout << ve);
 			std::cout.clear();
 		}
@@ -35,7 +37,7 @@ namespace FunctionalityTest {
 			myService.addOffer("fdssdd", "", "gdffgdfg", 500);
 			assert(false);
 		}
-		catch (ValidException& ve) {
+		catch (const ValidException& ve) {
 			assert(std::cout << ve);
 			std::cout.clear();
 		}
@@ -44,7 +46,7 @@ namespace FunctionalityTest {
 			myService.addOffer("", "dsffds", "dssdfd", 500);
 			assert(false);
 		}
-		catch (ValidException& ve) {
+		catch (const ValidException& ve) {
 			assert(std::cout << ve);
 			std::cout.clear();
 		}
@@ -53,7 +55,7 @@ namespace FunctionalityTest {
 			myService.addOffer("ddfs", "dfsdfs", "gsdsdg", -500);
 			assert(false);
 		}
-		catch (ValidException& ve) {
+		catch (const ValidException& ve) {
 			assert(std::cout << ve);
 			std::cout.clear();
 		}
@@ -62,20 +64,21 @@ namespace FunctionalityTest {
 	void testModify() {
 		Repository myRepo{};
 		OfferValidator myValidator{};
-		Service myService{ myRepo, myValidator };
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
 		myService.addOffer("Oferta1", "Bali", "type1", 500);
 		myService.addOffer("Oferta2", "Bali", "type1", 500);
 		assert(myService.getAllOffers().size() == 2);
 		myService.modifyOffer(1, "Oferta3", "New York", "type2", 500);
-		assert(myService.getAllOffers()[1].getDestination() == "New York");
-		assert(myService.getAllOffers()[1].getType() == "type2");
-		assert(myService.getAllOffers()[1].getName() == "Oferta3");
-		assert(myService.getAllOffers()[1].getPrice() == 500);
+		assert(myService.getAllOffers().at(1).getDestination() == "New York");
+		assert(myService.getAllOffers().at(1).getType() == "type2");
+		assert(myService.getAllOffers().at(1).getName() == "Oferta3");
+		assert(myService.getAllOffers().at(1).getPrice() == 500);
 		try {
 			myService.modifyOffer(2, "Oferta3", "New York", "type2", 500);
 			assert(false);
 		}
-		catch (DuplicateItemException& de) {
+		catch (const DuplicateItemException& de) {
 			assert(std::cout << de);
 			std::cout.clear();
 		}
@@ -84,7 +87,8 @@ namespace FunctionalityTest {
 	void testRemove() {
 		Repository myRepo{};
 		OfferValidator myValidator{};
-		Service myService{ myRepo, myValidator };
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
 		myService.addOffer("Oferta1", "Bali", "type1", 500);
 		myService.addOffer("Oferta2", "Bali", "type1", 500);
 		myService.removeOffer(2);
@@ -93,7 +97,7 @@ namespace FunctionalityTest {
 			myService.removeOffer(2);
 			assert(false);
 		}
-		catch (InexistentItemException& iie) {
+		catch (const InexistentItemException& iie) {
 			assert(std::cout << iie);
 			std::cout.clear();
 		}
@@ -102,13 +106,14 @@ namespace FunctionalityTest {
 	void testFind() {
 		Repository myRepo{};
 		OfferValidator myValidator{};
-		Service myService{ myRepo, myValidator };
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
 		myService.addOffer("Oferta1", "Bali", "type1", 250);
 		myService.addOffer("Oferta2", "Bali", "type2", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
 		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
 		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
-		List<Offer> result = myService.findByName("fert");
+		std::vector<Offer> result = myService.findByName("fert");
 		assert(result.size() == 2);
 		result = myService.findByName("canta");
 		assert(result.size() == 3);
@@ -119,13 +124,14 @@ namespace FunctionalityTest {
 	void testFilters() {
 		Repository myRepo{};
 		OfferValidator myValidator{};
-		Service myService{ myRepo, myValidator };
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
 		myService.addOffer("Oferta1", "Bali", "type1", 250);
 		myService.addOffer("Oferta2", "Bali", "type2", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
 		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
 		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
-		List<Offer> result = myService.filterByDestination("Dubai");
+		std::vector<Offer> result = myService.filterByDestination("Dubai");
 		assert(result.size() == 2);
 		result = myService.filterByDestination("New York");
 		assert(result.size() == 1);
@@ -142,18 +148,33 @@ namespace FunctionalityTest {
 	void testSortings() {
 		Repository myRepo{};
 		OfferValidator myValidator{};
-		Service myService{ myRepo, myValidator };
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
 		myService.addOffer("Oferta2", "Bali", "type2", 250);
 		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
 		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
 		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
-		List<Offer> result = myService.sortByName();
-		assert(result[0].getName() == "Oferta1" && result[2].getDestination() == "New York" && result[4].getName() == "Vacanta3");
+		std::vector<Offer> result = myService.sortByName();
+		assert(result.at(0).getName() == "Oferta1" && result.at(2).getDestination() == "New York" && result.at(4).getName() == "Vacanta3");
 		result = myService.sortByDestination();
-		assert(result[0].getDestination() == "Bali" && result[4].getDestination() == "New York");
+		assert(result.at(0).getDestination() == "Bali" && result.at(4).getDestination() == "New York");
 		result = myService.sortByTypeAndPrice();
-		assert(result[1].getType() == "type2" && result[1].getPrice() == 725.25 && result[4].getPrice() == 5005.3);
+		assert(result.at(1).getType() == "type2" && result.at(1).getPrice() == 725.25 && result.at(4).getPrice() == 5005.3);
+	}
+
+	void testWishlist() {
+		Repository myRepo{};
+		OfferValidator myValidator{};
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
+		myService.addOffer("Oferta2", "Bali", "type2", 250);
+		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
+		myService.addOffer("Vacanta1", "New York", "type3", 6000);
+		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
+		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
+		std::vector<Offer> off = myService.getAllOffers();
+		myWishlist.populateWishlist(4, off);
 	}
 
 	void testAll() {
@@ -163,6 +184,7 @@ namespace FunctionalityTest {
 		testFind();
 		testFilters();
 		testSortings();
+		testWishlist();
 		system("cls");
 	}
 }

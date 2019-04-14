@@ -7,8 +7,7 @@ class ValidException {
 private:
 	std::string message;
 public:
-	ValidException(std::string m) : message{ m } {
-	}
+	ValidException(std::string m) : message{ m } {}
 	friend std::ostream& operator<<(std::ostream& out, const ValidException& err);
 };
 

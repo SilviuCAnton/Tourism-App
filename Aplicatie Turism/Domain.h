@@ -26,7 +26,14 @@ public:
 	*/
 	Offer(int, std::string, std::string, std::string, double);
 
+	//Copy Constructor
 	Offer(const Offer& ot);
+
+	//Asignment operator overload
+	Offer& operator=(const Offer& ot);
+
+	//Destructor
+	~Offer() = default;
 
 	/*
 	Description: getter for the id
@@ -69,43 +76,11 @@ public:
 	double getPrice() const noexcept;
 
 	/*
-	Description: setter for the name
-
-	In:
-		- name - sets the name of the offer
-	*/
-	void setName(std::string);
-
-	/*
-	Description: setter for the destination
-
-	In:
-		- destination - sets the destination of the offer
-	*/
-	void setDestination(std::string);
-
-	/*
-	Description: setter for the type
-
-	In:
-		- type - sets the type of the offer
-	*/
-	void setType(std::string);
-
-	/*
-	Description: setter for the price
-
-	In:
-		- price - sets the price of the offer
-	*/
-	void setPrice(double) noexcept;
-
-	/*
 	Description: == operator overload
 
 	Out: returns true if 2 offers are considered equal(name, destination and type are the same);
 	*/
-	bool operator==(const Offer&) const;
+	bool operator==(const Offer&) const noexcept;
 
 	//Print representation
 	friend std::ostream& operator<<(std::ostream& out, const Offer& offer);

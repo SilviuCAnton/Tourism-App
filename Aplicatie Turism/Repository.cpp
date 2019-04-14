@@ -10,7 +10,7 @@ void Repository::deleteElement(int id) {
 	int index{ 0 };
 	for (const auto& elem : items) {
 		if (elem.getId() == id) {
-			items.remove(items.begin() + index);
+			items.erase(items.begin() + index);
 			index = -1;
 			break;
 		}
@@ -21,7 +21,7 @@ void Repository::deleteElement(int id) {
 	}
 }
 
-const List<Offer>& Repository::getAll() const {
+const std::vector<Offer>& Repository::getAll() const noexcept {
 	return items;
 }
 
@@ -30,7 +30,7 @@ void Repository::update(const Offer& offer) {
 	this->store(offer);
 }
 
-int Repository::getMaxId() const noexcept{
+int Repository::getMaxId() const noexcept {
 	int maxId = 0;
 	for (const auto& item : items) {
 		if (item.getId() > maxId){

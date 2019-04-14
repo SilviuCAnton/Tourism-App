@@ -8,6 +8,19 @@ Offer::Offer(const Offer& ot) : id{ ot.id }, name{ ot.name }, destination{ ot.de
 	std::cout << "copy" << std::endl;
 }
 
+Offer & Offer::operator=(const Offer & ot)
+{
+	if (*this == ot) {
+		return *this;
+	}
+	id = ot.id;
+	name = ot.name;
+	destination = ot.destination;
+	type = ot.type;
+	price = ot.price;
+	return *this;
+}
+
 int Offer::getId() const noexcept {
 	return id;
 }
@@ -28,7 +41,7 @@ double Offer::getPrice() const noexcept {
 	return price;
 }
 
-bool Offer::operator==(const Offer& otherOffer) const {
+bool Offer::operator==(const Offer& otherOffer) const noexcept {
 	return name == otherOffer.name && type == otherOffer.type && destination == otherOffer.destination;
 }
 
