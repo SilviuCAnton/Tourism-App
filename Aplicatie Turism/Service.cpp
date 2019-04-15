@@ -171,6 +171,6 @@ const std::vector<Offer>& Service::getWishlist() const noexcept {
 	return wishlist.getAll();
 }
 
-const int Service::getWishlistSize() const {
+const int Service::getWishlistSize() const noexcept {
 	return wishlist.getSize();
 }
