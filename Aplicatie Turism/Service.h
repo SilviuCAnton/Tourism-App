@@ -125,4 +125,7 @@ public:
 		- wishlist - offer list
 	*/
 	const std::vector<Offer>& getWishlist() const noexcept;
+
+	//Description: returns the size of the wishlist
+	const int getWishlistSize() const;
 };

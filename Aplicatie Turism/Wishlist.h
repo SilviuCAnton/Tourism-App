@@ -32,5 +32,8 @@ public:
 
 	//Returns a list of all the offers in the wishlist
 	const std::vector<Offer>& getAll() const noexcept;
+
+	//Returns size of wishlist
+	const int getSize() const noexcept;
 };
 

@@ -173,8 +173,42 @@ namespace FunctionalityTest {
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
 		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
 		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
-		std::vector<Offer> off = myService.getAllOffers();
-		myWishlist.populateWishlist(4, off);
+		myService.populateWishlist(3);
+		assert(myService.getWishlistSize() == 3);
+		myService.emptyWishlist();
+		assert(myService.getWishlistSize() == 0);
+		myService.addToWishlist(5);
+		myService.addToWishlist(3);
+
+		try {
+			myService.addToWishlist(3);
+			assert(false);
+		}
+		catch (const DuplicateItemException&) {
+			assert(true);
+		}
+
+		try {
+			myService.addToWishlist(8);
+			assert(false);
+		}
+		catch (const InexistentItemException&) {
+			assert(true);
+		}
+
+		Wishlist wishlist2{};
+		wishlist2.populateWishlist(3, myService.getAllOffers());
+		myWishlist = wishlist2;
+		assert(myWishlist == wishlist2);
+		wishlist2.populateWishlist(3, myService.getAllOffers());
+		assert(!(myWishlist == wishlist2));
+		wishlist2 = wishlist2;
+		assert(wishlist2.getSize() == 3);
+
+		assert(myService.getWishlist().at(0).getName() == "Vacanta3" && myService.getWishlist().at(1).getType() == "type3");
+		assert(myService.getWishlistSize() == 2);
+		myService.emptyWishlist();
+		assert(myService.getWishlistSize() == 0);
 	}
 
 	void testAll() {

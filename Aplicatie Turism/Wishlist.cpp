@@ -17,6 +17,10 @@ Wishlist& Wishlist::operator=(const Wishlist& other) {
 }
 
 bool Wishlist::operator==(const Wishlist& other) {
+	if (items.size() != other.getSize()) {
+		return false;
+	}
+
 	for (unsigned int i = 0; i < items.size(); i++) {
 		if (!(items.at(i) == other.items.at(i))) {
 			return false;
@@ -47,4 +51,8 @@ void Wishlist::populateWishlist(int number, std::vector<Offer> offers) {
 
 const std::vector<Offer>& Wishlist::getAll() const noexcept {
 	return items;
+}
+
+const int Wishlist::getSize() const noexcept {
+	return items.size();
 }

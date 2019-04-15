@@ -170,3 +170,7 @@ void Service::populateWishlist(int n) {
 const std::vector<Offer>& Service::getWishlist() const noexcept {
 	return wishlist.getAll();
 }
+
+const int Service::getWishlistSize() const {
+	return wishlist.getSize();
+}
