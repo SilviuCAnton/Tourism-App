@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <map>
 #include "Repository.h"
 #include "Domain.h"
 #include "Validator.h"
@@ -11,7 +13,9 @@ private:
 	Repository repository;
 	OfferValidator validator;
 	Wishlist wishlist;
+
 public:
+
 	/*
 	Description: service constructor
 	*/
@@ -128,4 +132,7 @@ public:
 
 	//Description: returns the size of the wishlist
 	const int getWishlistSize() const noexcept;
+
+	//Type statistics - counts how many offers of each type exist
+	std::vector<TypeCountDTO> typeStatistic() const;
 };

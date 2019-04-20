@@ -174,3 +174,25 @@ const std::vector<Offer>& Service::getWishlist() const noexcept {
 const int Service::getWishlistSize() const noexcept {
 	return wishlist.getSize();
 }
+
+std::vector<TypeCountDTO> Service::typeStatistic() const {
+	std::vector<TypeCountDTO> result{};
+	std::map<std::string, int> statistic;
+
+	std::for_each(getAllOffers().begin(), getAllOffers().end(), [&statistic](const auto& offer) {
+		auto it = statistic.find(offer.getType());
+		if (it == statistic.end()) {
+			statistic[offer.getType()] = 1;
+		}
+		else {
+			statistic[offer.getType()]++;
+		}
+	}); 
+
+	std::for_each(statistic.begin(), statistic.end(), [&result](const auto& myMapPair) {
+		TypeCountDTO myDTO{ myMapPair.first, myMapPair.second };
+		result.push_back(myDTO);
+	});
+
+	return result;
+}

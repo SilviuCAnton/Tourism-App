@@ -1,6 +1,7 @@
 #include "Tests.h"
 #include "Service.h"
 #include <assert.h>
+#include <algorithm>
 #include "Exceptions.h"
 #include "Wishlist.h"
 #include <iostream>
@@ -211,6 +212,32 @@ namespace FunctionalityTest {
 		assert(myService.getWishlistSize() == 0);
 	}
 
+	void testStatistics() {
+		Repository myRepo{};
+		OfferValidator myValidator{};
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
+		myService.addOffer("Oferta2", "Bali", "type2", 250);
+		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
+		myService.addOffer("Vacanta1", "New York", "type3", 6000);
+		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
+		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
+		std::vector<TypeCountDTO> stat = myService.typeStatistic();
+		std::for_each(stat.begin(), stat.end(), [](const auto& dto) {
+			if (dto.getType() == "type3") {
+				assert(dto.getCount() == 2);
+			}
+
+			if (dto.getType() == "type1") {
+				assert(dto.getCount() == 1);
+			}
+
+			if (dto.getType() == "type2") {
+				assert(dto.getCount() == 2);
+			}
+		});
+	}
+
 	void testAll() {
 		testAdd();
 		testModify();
@@ -219,6 +246,7 @@ namespace FunctionalityTest {
 		testFilters();
 		testSortings();
 		testWishlist();
+		testStatistics();
 		system("cls");
 	}
 }

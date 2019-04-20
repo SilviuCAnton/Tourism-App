@@ -85,3 +85,22 @@ public:
 	//Print representation
 	friend std::ostream& operator<<(std::ostream& out, const Offer& offer);
 };
+
+class TypeCountDTO {
+private:
+	std::string type;
+	int count;
+public:
+	TypeCountDTO(std::string newtype, int newcount) {
+		type = newtype;
+		count = newcount;
+	}
+
+	std::string getType() const {
+		return type;
+	}
+
+	int getCount() const noexcept{
+		return count;
+	}
+};

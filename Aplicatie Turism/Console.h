@@ -20,6 +20,7 @@ private:
 	void emptyWishlistUI();
 	void populateWishlistUI();
 	void printWishlist(const std::vector<Offer>& offers) const;
+	void typeStatisticsUI() const;
 public:
 	Console(const Service&);
 	void run();

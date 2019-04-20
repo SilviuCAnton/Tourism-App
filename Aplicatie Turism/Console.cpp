@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Exceptions.h"
 #include <exception>
+#include <algorithm>
 
 
 Console::Console(const Service& service) : service{ service } {
@@ -19,6 +20,7 @@ void Console::displayMenu() const {
 	std::cout << "8  Sortare crescator dupa destinatie" << std::endl;
 	std::cout << "9  Sortare crescator dupa tip si descrescator dupa pret" << std::endl;
 	std::cout << "10 Optiuni wishlist" << std::endl;
+	std::cout << "11 Situatie tipuri oferte" << std::endl;
 	std::cout << "0  Inchideti aplicatia" << std::endl;
 	std::cout << "Introduceti o optiune: ";
 }
@@ -30,6 +32,15 @@ void Console::printWishlist(const std::vector<Offer>& offers) const {
 		std::cout << offer << std::endl;
 	}
 	std::cout << std::endl;
+}
+
+void Console::typeStatisticsUI() const {
+	std::vector<TypeCountDTO> stat = service.typeStatistic();
+	std::cout << std::endl;
+	std::cout << "Situatie tipuri oferte:" << std::endl;
+	std::for_each(stat.begin(), stat.end(), [](const auto& dto) {
+		std::cout << dto.getType() << ":" << dto.getCount() << std::endl;
+	});
 }
 
 void Console::printList(const std::vector<Offer>& offers) const {
@@ -319,6 +330,10 @@ void Console::run() {
 					break;
 				}
 
+				break;
+
+			case 11:
+				typeStatisticsUI();
 				break;
 			default:
 				std::cout << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;

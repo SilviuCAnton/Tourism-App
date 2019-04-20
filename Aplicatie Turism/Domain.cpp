@@ -5,7 +5,7 @@ Offer::Offer(int id, std::string name, std::string destination, std::string type
 }
 
 Offer::Offer(const Offer& ot) : id{ ot.id }, name{ ot.name }, destination{ ot.destination }, type{ ot.type }, price{ ot.price } {
-	std::cout << "copy" << std::endl;
+	//std::cout << "copy" << std::endl;
 }
 
 Offer & Offer::operator=(const Offer & ot)
