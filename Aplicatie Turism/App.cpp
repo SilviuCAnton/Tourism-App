@@ -10,7 +10,7 @@ int main() {
 	{
 		FunctionalityTest::testAll();
 		OfferValidator myValidator{};
-		Repository myRepo{};
+		FileRepository myRepo{"repository.txt"};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
 		Console myConsole{ myService };

@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Undo.cpp" />
     <ClCompile Include="Wishlist.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Domain.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="Validator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Undo.h" />
     <ClInclude Include="Wishlist.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Domain.h" />
@@ -147,6 +149,10 @@
     <ClInclude Include="Service.h" />
     <ClInclude Include="Tests.h" />
     <ClInclude Include="Validator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="repository.txt" />
+    <Text Include="testRepo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

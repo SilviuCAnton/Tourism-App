@@ -42,6 +42,9 @@
     <ClCompile Include="Wishlist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Undo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Domain.h">
@@ -71,5 +74,16 @@
     <ClInclude Include="Wishlist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Undo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="repository.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="testRepo.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

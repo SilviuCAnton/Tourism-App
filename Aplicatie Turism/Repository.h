@@ -17,13 +17,16 @@ public:
 	*/
 	Repository() = default;
 
+	//Description: repository destructor
+	virtual ~Repository() = default;
+
 	/*
 	Description: stores an offer into the repository
 
 	In:
 		- offer - the offer to store
 	*/
-	void store(const Offer&);
+	virtual void store(const Offer&);
 
 	/*
 	Description: deletes an offer from the repository
@@ -35,7 +38,7 @@ public:
 	Exceptions:
 		- throws InexistentItemException if the offer does not exist
 	*/
-	void deleteElement(int);
+	virtual void deleteElement(int);
 
 	/*
 	Description: returns a copy of the list of all the offers inside the repository
@@ -51,7 +54,7 @@ public:
 	In:
 		- offer - an offer with the id of the offer we want to update
 	*/
-	void update(const Offer&);
+	virtual void update(const Offer&);
 
 	/*
 	Description: returns the maximum id used already for an offer in the repository
@@ -60,4 +63,17 @@ public:
 		- maxID - the max id used
 	*/
 	int getMaxId() const noexcept;
+};
+
+class FileRepository : public Repository {
+private:
+	std::string fileName;
+	void storeToFile();
+	void readFromFile();
+public:
+	FileRepository(std::string fileName);
+	void store(const Offer&) override;
+	void deleteElement(int) override;
+	void update(const Offer&) override;
+	void emptyRepo();
 };

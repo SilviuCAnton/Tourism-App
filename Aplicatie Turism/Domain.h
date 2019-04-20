@@ -44,12 +44,28 @@ public:
 	int getId() const noexcept;
 
 	/*
+	Description: setter for the id
+
+	Out:
+		- id - sets the id of the offer
+	*/
+	void setId(int) noexcept;
+
+	/*
 	Description: getter for the name
 
 	Out:
 		- name - returns the name of the offer
 	*/
 	std::string getName() const;
+
+	/*
+	Description: setter for the name
+
+	Out:
+		- name - sets the name of the offer
+	*/
+	void setName(std::string);
 
 	/*
 	Description: getter for the destination
@@ -60,12 +76,28 @@ public:
 	std::string getDestination() const;
 
 	/*
+	Description: setter for the destination
+
+	Out:
+		- destination - sets the destination of the offer
+	*/
+	void setDestination(std::string);
+
+	/*
 	Description: getter for the type
 
 	Out:
 		- type - returns the type of the offer
 	*/
 	std::string getType() const;
+
+	/*
+	Description: setter for the type
+
+	Out:
+		- type - sets the type of the offer
+	*/
+	void setType(std::string);
 
 	/*
 	Description: getter for the price
@@ -76,6 +108,14 @@ public:
 	double getPrice() const noexcept;
 
 	/*
+	Description: setter for the price
+
+	Out:
+		- price - sets the price of the offer
+	*/
+	void setPrice(double) noexcept;
+
+	/*
 	Description: == operator overload
 
 	Out: returns true if 2 offers are considered equal(name, destination and type are the same);
@@ -84,6 +124,9 @@ public:
 
 	//Print representation
 	friend std::ostream& operator<<(std::ostream& out, const Offer& offer);
+
+	//Read representation
+	friend std::istream& operator>>(std::istream& in, Offer& offer);
 };
 
 class TypeCountDTO {

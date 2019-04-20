@@ -2,7 +2,7 @@
 #include "Exceptions.h"
 #include <algorithm>
 
-Service::Service(const Repository& repository, const OfferValidator& validator, const Wishlist&) : repository{ repository }, validator{ validator }, wishlist{ wishlist } {
+Service::Service(Repository& repository, const OfferValidator& validator, const Wishlist&) : repository{ repository }, validator{ validator }, wishlist{ wishlist } {
 }
 
 void Service::addOffer(std::string name, std::string destination, std::string type, double price) {

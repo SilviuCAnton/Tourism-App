@@ -8,7 +8,7 @@
 
 namespace FunctionalityTest {
 	void testAdd() {
-		Repository myRepo{};
+		FileRepository myRepo{"testRepo.txt"};
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -60,10 +60,11 @@ namespace FunctionalityTest {
 			assert(std::cout << ve);
 			std::cout.clear();
 		}
+		myRepo.emptyRepo();
 	}
 
 	void testModify() {
-		Repository myRepo{};
+		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -83,10 +84,11 @@ namespace FunctionalityTest {
 			assert(std::cout << de);
 			std::cout.clear();
 		}
+		myRepo.emptyRepo();
 	}
 
 	void testRemove() {
-		Repository myRepo{};
+		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -102,10 +104,11 @@ namespace FunctionalityTest {
 			assert(std::cout << iie);
 			std::cout.clear();
 		}
+		myRepo.emptyRepo();
 	}
 
 	void testFind() {
-		Repository myRepo{};
+		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -120,10 +123,11 @@ namespace FunctionalityTest {
 		assert(result.size() == 3);
 		result = myService.findByName("lili");
 		assert(result.size() == 0);
+		myRepo.emptyRepo();
 	}
 
 	void testFilters() {
-		Repository myRepo{};
+		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -144,10 +148,11 @@ namespace FunctionalityTest {
 		assert(result.size() == 5);
 		result = myService.filterByPrice(249);
 		assert(result.size() == 0);
+		myRepo.emptyRepo();
 	}
 
 	void testSortings() {
-		Repository myRepo{};
+		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -162,10 +167,11 @@ namespace FunctionalityTest {
 		assert(result.at(0).getDestination() == "Bali" && result.at(4).getDestination() == "New York");
 		result = myService.sortByTypeAndPrice();
 		assert(result.at(1).getType() == "type2" && result.at(1).getPrice() == 725.25 && result.at(4).getPrice() == 5005.3);
+		myRepo.emptyRepo();
 	}
 
 	void testWishlist() {
-		Repository myRepo{};
+		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -210,10 +216,11 @@ namespace FunctionalityTest {
 		assert(myService.getWishlistSize() == 2);
 		myService.emptyWishlist();
 		assert(myService.getWishlistSize() == 0);
+		myRepo.emptyRepo();
 	}
 
 	void testStatistics() {
-		Repository myRepo{};
+		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
@@ -236,6 +243,7 @@ namespace FunctionalityTest {
 				assert(dto.getCount() == 2);
 			}
 		});
+		myRepo.emptyRepo();
 	}
 
 	void testAll() {

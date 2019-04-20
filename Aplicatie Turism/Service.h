@@ -10,7 +10,7 @@
 
 class Service {
 private:
-	Repository repository;
+	Repository& repository;
 	OfferValidator validator;
 	Wishlist wishlist;
 
@@ -19,7 +19,7 @@ public:
 	/*
 	Description: service constructor
 	*/
-	Service(const Repository&, const OfferValidator&, const Wishlist&);
+	Service(Repository&, const OfferValidator&, const Wishlist&);
 
 	/*
 	Description: adds an offer given a name, a destination, a type and a price
