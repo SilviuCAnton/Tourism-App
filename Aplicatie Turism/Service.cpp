@@ -2,7 +2,7 @@
 #include "Exceptions.h"
 #include <algorithm>
 
-Service::Service(Repository& repository, const OfferValidator& validator, const Wishlist&) : repository{ repository }, validator{ validator }, wishlist{ wishlist } {
+Service::Service(Repository& repository, const OfferValidator& validator, const Wishlist&) : repository{ repository }, validator{ validator }, wishlist{ wishlist }, undoIndex{ -1 } {
 }
 
 void Service::addOffer(std::string name, std::string destination, std::string type, double price) {
@@ -19,11 +19,20 @@ void Service::addOffer(std::string name, std::string destination, std::string ty
 	}
 
 	this->repository.store(newOffer);
+
+	const UndoAdd* undoPointer = new UndoAdd{ repository, newOffer };
+
+	while (undoIndex != undoList.size() - 1) {
+		undoList.pop_back();
+	}
+
+	undoList.push_back(undoPointer->clone());
+	undoIndex = undoList.size() - 1;
 }
 
 void Service::modifyOffer(int id, std::string name, std::string destination, std::string type, double price) {
 	Offer newOffer{ id, name, destination, type, price };
-
+	Offer originalOffer{ 0,"","","",0 };
 	this->validator.validate(newOffer);
 
 	const std::vector<Offer>& offers = this->repository.getAll();
@@ -32,13 +41,44 @@ void Service::modifyOffer(int id, std::string name, std::string destination, std
 			throw DuplicateItemException("Oferta exista deja!!!");
 		}
 	}
-	
+
+	for (const auto& offer : getAllOffers()) {
+		if (newOffer.getId() == offer.getId()) {
+			originalOffer = offer;
+		}
+	}
+
 	this->repository.update(newOffer);
+	const UndoModify* undoPointer = new UndoModify{ repository, originalOffer, newOffer };
+
+	while (undoIndex != undoList.size() - 1) {
+		undoList.pop_back();
+	}
+
+	undoList.push_back(undoPointer->clone());
+	undoIndex = undoList.size() - 1;
 }
 
 void Service::removeOffer(int id) {
+	Offer myOffer{ 0,"","","",0 };
+
+	for (const auto& offer : getAllOffers()) {
+		if (id == offer.getId()) {
+			myOffer = offer;
+		}
+	}
+
 	this->repository.deleteElement(id);
-}
+
+	const UndoRemove* undoPointer = new UndoRemove{ repository, myOffer };
+
+	while (undoIndex != undoList.size() - 1) {
+		undoList.pop_back();
+	}
+
+	undoList.push_back(undoPointer->clone());
+	undoIndex = undoList.size() - 1;
+	}
 
 const std::vector<Offer>& Service::getAllOffers() const noexcept {
 	return this->repository.getAll();
@@ -195,4 +235,20 @@ std::vector<TypeCountDTO> Service::typeStatistic() const {
 	});
 
 	return result;
+}
+
+void Service::undo() {
+	if (undoIndex < 0) {
+		throw ValidException("Nu se mai poate face undo!!!");
+	}
+	undoList.at(undoIndex)->doUndo();
+	undoIndex--;
+}
+
+void Service::redo() {
+	if (undoIndex == undoList.size() - 1) {
+		throw ValidException("Nu se mai poate face redo!!!");
+	}
+	undoList.at(undoIndex + 1)->doRedo();
+	undoIndex++;
 }

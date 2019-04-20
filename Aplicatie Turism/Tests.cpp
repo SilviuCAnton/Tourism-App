@@ -246,6 +246,78 @@ namespace FunctionalityTest {
 		myRepo.emptyRepo();
 	}
 
+	void testUndo() {
+		FileRepository myRepo{ "testRepo.txt" };
+		OfferValidator myValidator{};
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
+		myService.addOffer("Oferta2", "Bali", "type2", 250);
+		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
+		myService.addOffer("Vacanta1", "New York", "type3", 6000);
+		myService.addOffer("Vacanta2", "Dubai", "type2", 725.25);
+		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
+
+		myService.undo();
+		myService.addOffer("Vacanta3", "Dubai", "type3", 5005.3);
+		try {
+			myService.redo();
+			assert(false);
+		}
+		catch (const ValidException&) {
+			assert(true);
+		}
+
+		myService.modifyOffer(1, "Oferta6", "Bali", "type2", 250);
+		myService.undo();
+		myService.modifyOffer(1, "Oferta6", "Bali", "type2", 250);
+		try {
+			myService.redo();
+			assert(false);
+		}
+		catch (const ValidException&) {
+			assert(true);
+		}
+
+		myService.undo();
+		myService.redo();
+		assert(myService.getAllOffers().at(4).getName() == "Oferta6");
+	
+		myService.undo();
+		myService.redo();
+		assert(myService.getAllOffers().size() == 5);
+		try {
+			myService.redo();
+			assert(false);
+		}
+		catch (const ValidException&) {
+			assert(true);
+		}
+		myService.undo(); // Undo la modify
+		myService.undo(); // Undo la add
+		assert(myService.getAllOffers().size() == 4);
+		myService.redo(); // Redo la add
+		myService.undo(); 
+		myService.removeOffer(1);
+		assert(myService.getAllOffers().size() == 3);
+		myService.undo();
+		myService.redo();
+		myService.undo();
+		myService.undo();
+		myService.undo();
+		myService.undo();
+		myService.undo();
+		try {
+			myService.undo();
+			assert(false);
+		}
+		catch (const ValidException&) {
+			assert(true);
+		}
+		assert(myService.getAllOffers().size() == 0);
+
+		myRepo.emptyRepo();
+	}
+
 	void testAll() {
 		testAdd();
 		testModify();
@@ -255,6 +327,7 @@ namespace FunctionalityTest {
 		testSortings();
 		testWishlist();
 		testStatistics();
+		testUndo();
 		system("cls");
 	}
 }

@@ -5,6 +5,7 @@
 #include "Domain.h"
 #include "Validator.h"
 #include "Wishlist.h"
+#include "Undo.h"
 
 //Module for the main functionalities of the app (GRASP Controller)
 
@@ -13,6 +14,8 @@ private:
 	Repository& repository;
 	OfferValidator validator;
 	Wishlist wishlist;
+	std::vector<std::unique_ptr<UndoAction>> undoList;
+	int undoIndex;
 
 public:
 
@@ -135,4 +138,8 @@ public:
 
 	//Type statistics - counts how many offers of each type exist
 	std::vector<TypeCountDTO> typeStatistic() const;
+
+	void undo();
+
+	void redo();
 };

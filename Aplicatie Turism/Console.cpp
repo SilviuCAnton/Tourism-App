@@ -5,7 +5,7 @@
 #include <algorithm>
 
 
-Console::Console(const Service& service) : service{ service } {
+Console::Console(Service& service) noexcept : service{ service } {
 }
 
 void Console::displayMenu() const {
@@ -21,6 +21,8 @@ void Console::displayMenu() const {
 	std::cout << "9  Sortare crescator dupa tip si descrescator dupa pret" << std::endl;
 	std::cout << "10 Optiuni wishlist" << std::endl;
 	std::cout << "11 Situatie tipuri oferte" << std::endl;
+	std::cout << "12 Undo" << std::endl;
+	std::cout << "13 Redo" << std::endl;
 	std::cout << "0  Inchideti aplicatia" << std::endl;
 	std::cout << "Introduceti o optiune: ";
 }
@@ -233,6 +235,14 @@ void Console::populateWishlistUI() {
 	std::cout << "Wishlistul a fost pupulat!" << std::endl;
 }
 
+void Console::undoUI() {
+	service.undo();
+}
+
+void Console::redoUI() {
+	service.redo();
+}
+
 void Console::run() {
 	int choice{ -1 };
 	int choiceWishlist{ -1 };
@@ -264,32 +274,40 @@ void Console::run() {
 			case 1:
 				addOfferUI();
 				break;
+
 			case 2:
 				modifyOfferUI();
 				break;
+
 			case 3:
 				removeOfferUI();
 				break;
+
 			case 4:
 				findByNameUI();
 				break;
+
 			case 5:
 				filterByDestinationUI();
 				break;
+
 			case 6:
 				filterByPriceUI();
 				break;
+
 			case 7:
 				sortByNameUI();
 				break;
+
 			case 8:
 				sortByDestinationUI();
 				break;
+
 			case 9:
 				sortByTypeAndPriceUI();
 				break;
+
 			case 10:
-				
 				std::cout << "Alegeti una dintre urmatoarele optiuni:" << std::endl;
 				std::cout << "1  Adauga la wishlist" << std::endl;
 				std::cout << "2  Goleste wishlist" << std::endl;
@@ -317,14 +335,18 @@ void Console::run() {
 				case 1:
 					addToWishlistUI();
 					break;
+
 				case 2:
 					emptyWishlistUI();
 					break;
+
 				case 3:
 					populateWishlistUI();
 					break;
+
 				case 0:
 					break;
+
 				default:
 					std::cout << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;
 					break;
@@ -335,6 +357,15 @@ void Console::run() {
 			case 11:
 				typeStatisticsUI();
 				break;
+
+			case 12:
+				undoUI();
+				break;
+			
+			case 13:
+				redoUI();
+				break;
+
 			default:
 				std::cout << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;
 				break;

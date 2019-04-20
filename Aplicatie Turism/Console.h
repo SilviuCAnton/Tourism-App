@@ -3,7 +3,7 @@
 
 class Console {
 private:
-	Service service;
+	Service& service;
 	void printList(const std::vector<Offer>&) const;
 	void printResultList(const std::vector<Offer>& offers) const;
 	void displayMenu() const;
@@ -21,7 +21,9 @@ private:
 	void populateWishlistUI();
 	void printWishlist(const std::vector<Offer>& offers) const;
 	void typeStatisticsUI() const;
+	void undoUI();
+	void redoUI();
 public:
-	Console(const Service&);
+	Console(Service&) noexcept;
 	void run();
 };

@@ -5,6 +5,7 @@ class UndoAction
 public:
 	virtual void doUndo() = 0;
 	virtual void doRedo() = 0;
+	virtual std::unique_ptr<UndoAction> clone() const = 0;
 	virtual ~UndoAction() = default;
 };
 
@@ -16,6 +17,7 @@ public:
 	UndoAdd(Repository& repo, Offer offer);
 	void doUndo() override;
 	void doRedo() override;
+	std::unique_ptr<UndoAction> clone() const override;
 };
 
 class UndoRemove : public UndoAction {
@@ -26,6 +28,7 @@ public:
 	UndoRemove(Repository& repo, Offer offer);
 	void doUndo() override;
 	void doRedo() override;
+	std::unique_ptr<UndoAction> clone() const override;
 };
 
 class UndoModify : public UndoAction {
@@ -37,4 +40,5 @@ public:
 	UndoModify(Repository& repo, Offer originalOffer, Offer modifiedOffer);
 	void doUndo() override;
 	void doRedo() override;
+	std::unique_ptr<UndoAction> clone() const override;
 };
