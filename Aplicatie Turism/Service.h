@@ -139,7 +139,12 @@ public:
 	//Type statistics - counts how many offers of each type exist
 	std::vector<TypeCountDTO> typeStatistic() const;
 
+	//reverts the last operation
 	void undo();
 
+	//redoes the last operation
 	void redo();
+
+	//Exports wishlist as a CSV file
+	void exportWishlistCSV(std::string saveName) const;
 };

@@ -252,3 +252,7 @@ void Service::redo() {
 	undoList.at(undoIndex + 1)->doRedo();
 	undoIndex++;
 }
+
+void Service::exportWishlistCSV(std::string saveName) const {
+	wishlist.exportCSV(saveName);
+}

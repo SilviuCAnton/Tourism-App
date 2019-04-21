@@ -3,6 +3,7 @@
 #include <gsl_util.h>
 #include <chrono>
 #include "Exceptions.h"
+#include <fstream>
 
 Wishlist::Wishlist(const Wishlist& other) : items{ other.items } {
 }
@@ -55,4 +56,13 @@ const std::vector<Offer>& Wishlist::getAll() const noexcept {
 
 const int Wishlist::getSize() const noexcept {
 	return items.size();
+}
+
+void Wishlist::exportCSV(std::string saveName) const {
+	saveName = saveName + ".csv";
+	std::ofstream f(saveName);
+	for (const auto& offer : items) {
+		f << offer << std::endl;
+	}
+	f.close();
 }

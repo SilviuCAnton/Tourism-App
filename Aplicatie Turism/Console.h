@@ -23,6 +23,7 @@ private:
 	void typeStatisticsUI() const;
 	void undoUI();
 	void redoUI();
+	void exportWishlistUI() const;
 public:
 	Console(Service&) noexcept;
 	void run();

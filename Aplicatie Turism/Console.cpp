@@ -139,7 +139,7 @@ void Console::findByNameUI() const {
 
 	std::vector<Offer> foundOffers = service.findByName(name);
 	if (foundOffers.size() == 0) {
-		std::cout << std::endl << "Nu sunt oferete cu numele dat!!!" << std::endl << std::endl;
+		std::cerr << std::endl << "Nu sunt oferete cu numele dat!!!" << std::endl << std::endl;
 	}
 	else {
 		printResultList(foundOffers);
@@ -156,7 +156,7 @@ void Console::filterByDestinationUI() const {
 
 	std::vector<Offer> filteredOffers = service.filterByDestination(destination);
 	if (filteredOffers.size() == 0) {
-		std::cout << std::endl << "Nu sunt oferete cu destinatia data!!!" << std::endl << std::endl;
+		std::cerr << std::endl << "Nu sunt oferete cu destinatia data!!!" << std::endl << std::endl;
 	}
 	else {
 		printResultList(filteredOffers);
@@ -176,7 +176,7 @@ void Console::filterByPriceUI() const {
 
 	std::vector<Offer> filteredOffers = service.filterByPrice(price);
 	if (filteredOffers.size() == 0) {
-		std::cout << std::endl << "Nu sunt oferete cu pretul dat!!!" << std::endl << std::endl;
+		std::cerr << std::endl << "Nu sunt oferete cu pretul dat!!!" << std::endl << std::endl;
 	}
 	else {
 		printResultList(filteredOffers);
@@ -241,6 +241,14 @@ void Console::undoUI() {
 
 void Console::redoUI() {
 	service.redo();
+}
+
+void Console::exportWishlistUI() const {
+	std::string saveName;
+	std::cout << "Introduceti numele salvarii: ";
+	std::cin >> saveName;
+	service.exportWishlistCSV(saveName);
+	std::cout << "Wishlistul a fost salvat!" << std::endl;
 }
 
 void Console::run() {
@@ -312,6 +320,7 @@ void Console::run() {
 				std::cout << "1  Adauga la wishlist" << std::endl;
 				std::cout << "2  Goleste wishlist" << std::endl;
 				std::cout << "3  Populeaza wishlist cu oferte random" << std::endl;
+				std::cout << "4  Exporta wishlist" << std::endl;
 				std::cout << "0  Inapoi";
 				std::cout << "Introduceti o optiune: ";
 
@@ -344,11 +353,15 @@ void Console::run() {
 					populateWishlistUI();
 					break;
 
+				case 4:
+					exportWishlistUI();
+					break;
+
 				case 0:
 					break;
 
 				default:
-					std::cout << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;
+					std::cerr << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;
 					break;
 				}
 
@@ -367,18 +380,18 @@ void Console::run() {
 				break;
 
 			default:
-				std::cout << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;
+				std::cerr << std::endl << "Optiunea nu exista!!!" << std::endl << std::endl;
 				break;
 			}
 		}
 		catch (const std::domain_error de) {
-			std::cout << std::endl << de.what() << std::endl << std::endl;
+			std::cerr << std::endl << de.what() << std::endl << std::endl;
 		}
 		catch (const InexistentItemException& iee) {
-			std::cout << std::endl << iee << std::endl << std::endl;
+			std::cerr << std::endl << iee << std::endl << std::endl;
 		}
 		catch (const DuplicateItemException& die) {
-			std::cout << std::endl << die << std::endl << std::endl;
+			std::cerr << std::endl << die << std::endl << std::endl;
 		}
 		catch (const ValidException& ve) {
 			std::cerr << std::endl << ve << std::endl << std::endl;

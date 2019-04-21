@@ -186,6 +186,7 @@ namespace FunctionalityTest {
 		assert(myService.getWishlistSize() == 0);
 		myService.addToWishlist(5);
 		myService.addToWishlist(3);
+		myService.exportWishlistCSV("WishlistExportTest");
 
 		try {
 			myService.addToWishlist(3);

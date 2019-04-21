@@ -66,7 +66,7 @@ bool Offer::operator==(const Offer& otherOffer) const noexcept {
 }
 
 std::ostream& operator<<(std::ostream& out, const Offer& offer) {
-	out << offer.getId() << " " << offer.getName() << " " << offer.getDestination() << " " << offer.getType() << " " << offer.getPrice();
+	out << offer.getId() << "\t" << offer.getName() << "\t" << offer.getDestination() << "\t" << offer.getType() << "\t" << offer.getPrice();
 	return out;
 }
 

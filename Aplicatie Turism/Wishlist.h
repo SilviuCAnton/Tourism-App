@@ -35,5 +35,8 @@ public:
 
 	//Returns size of wishlist
 	const int getSize() const noexcept;
+
+	//Exports wishlist as CSV file
+	void exportCSV(std::string saveName) const;
 };
 
