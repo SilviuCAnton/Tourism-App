@@ -20,13 +20,13 @@ void Service::addOffer(std::string name, std::string destination, std::string ty
 
 	this->repository.store(newOffer);
 
-	const UndoAdd* undoPointer = new UndoAdd{ repository, newOffer };
+	//const UndoAdd* undoPointer = new UndoAdd{ repository, newOffer };
 
 	while (undoIndex != undoList.size() - 1) {
 		undoList.pop_back();
 	}
 
-	undoList.push_back(undoPointer->clone());
+	undoList.push_back(std::make_unique<UndoAdd>(repository, newOffer));
 	undoIndex = undoList.size() - 1;
 }
 
@@ -49,13 +49,13 @@ void Service::modifyOffer(int id, std::string name, std::string destination, std
 	}
 
 	this->repository.update(newOffer);
-	const UndoModify* undoPointer = new UndoModify{ repository, originalOffer, newOffer };
+	//const UndoModify* undoPointer = new UndoModify{ repository, originalOffer, newOffer };
 
 	while (undoIndex != undoList.size() - 1) {
 		undoList.pop_back();
 	}
 
-	undoList.push_back(undoPointer->clone());
+	undoList.push_back(std::make_unique<UndoModify>(repository, originalOffer, newOffer));
 	undoIndex = undoList.size() - 1;
 }
 
@@ -70,13 +70,13 @@ void Service::removeOffer(int id) {
 
 	this->repository.deleteElement(id);
 
-	const UndoRemove* undoPointer = new UndoRemove{ repository, myOffer };
+	//const UndoRemove* undoPointer = new UndoRemove{ repository, myOffer };
 
 	while (undoIndex != undoList.size() - 1) {
 		undoList.pop_back();
 	}
 
-	undoList.push_back(undoPointer->clone());
+	undoList.push_back(std::make_unique<UndoRemove>(repository, myOffer));
 	undoIndex = undoList.size() - 1;
 	}
 
