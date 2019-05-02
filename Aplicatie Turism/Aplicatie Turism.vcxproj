@@ -113,10 +113,10 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AplicatieTurism.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Exceptions.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Repository.cpp" />
     <ClCompile Include="Service.cpp" />
@@ -126,18 +126,13 @@
     <ClCompile Include="Wishlist.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="AplicatieTurism.h" />
-  </ItemGroup>
-  <ItemGroup>
     <QtUic Include="AplicatieTurism.ui" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtRcc Include="AplicatieTurism.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h" />
     <ClInclude Include="Domain.h" />
     <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="Repository.h" />
     <ClInclude Include="Service.h" />
     <ClInclude Include="Tests.h" />
@@ -150,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="repository.txt" />
+    <Text Include="testRepo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
