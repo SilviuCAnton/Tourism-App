@@ -80,7 +80,7 @@ void Service::removeOffer(int id) {
 	undoIndex = undoList.size() - 1;
 	}
 
-const std::vector<Offer>& Service::getAllOffers() const noexcept {
+const std::vector<Offer>& Service::getAllOffers() const {
 	return this->repository.getAll();
 }
 
@@ -218,8 +218,9 @@ const int Service::getWishlistSize() const noexcept {
 std::vector<TypeCountDTO> Service::typeStatistic() const {
 	std::vector<TypeCountDTO> result{};
 	std::map<std::string, int> statistic;
+	const std::vector<Offer>& offers = getAllOffers();
 
-	std::for_each(getAllOffers().begin(), getAllOffers().end(), [&statistic](const auto& offer) {
+	std::for_each(offers.begin(), offers.end(), [&statistic](const auto& offer) {
 		auto it = statistic.find(offer.getType());
 		if (it == statistic.end()) {
 			statistic[offer.getType()] = 1;

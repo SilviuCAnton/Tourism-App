@@ -29,6 +29,8 @@ public:
 	//Copy Constructor
 	Offer(const Offer& ot);
 
+	Offer() = default;
+
 	//Asignment operator overload
 	Offer& operator=(const Offer& ot);
 

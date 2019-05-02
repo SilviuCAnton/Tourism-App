@@ -319,6 +319,51 @@ namespace FunctionalityTest {
 		myRepo.emptyRepo();
 	}
 
+	void testProbabilityRepo() {
+		ProbabilityRepo myRepo{1};
+		OfferValidator myValidator{};
+		Wishlist myWishlist{};
+		Service myService{ myRepo, myValidator, myWishlist };
+		try {
+			myService.addOffer("Oferta2", "Bali", "type2", 250);
+			assert(false);
+		}
+		catch (ValidException&) {
+			assert(true);
+		}
+		try {
+			myService.modifyOffer(1,"Oferta1", "Bali", "type2", 250);
+			assert(false);
+		}
+		catch (ValidException&) {
+			assert(true);
+		}
+		try {
+			myService.removeOffer(1);
+			assert(false);
+		}
+		catch (ValidException&) {
+			assert(true);
+		}
+
+		ProbabilityRepo myRepo1{ 0 };
+		OfferValidator myValidator1{};
+		Wishlist myWishlist1{};
+		Service myService1{ myRepo1, myValidator1, myWishlist1 };
+
+		try {
+			myService1.addOffer("Oferta2", "Bali", "type2", 250);
+			myService1.addOffer("Oferta5", "Bali", "type2", 2530);
+			myService1.modifyOffer(1, "Oferta1", "Bali", "type2", 250);
+			myService1.removeOffer(1);
+			assert(true);
+		}
+		catch (ValidException&) {
+			assert(false);
+		}
+
+	}
+
 	void testAll() {
 		testAdd();
 		testModify();
@@ -329,6 +374,7 @@ namespace FunctionalityTest {
 		testWishlist();
 		testStatistics();
 		testUndo();
+		testProbabilityRepo();
 		system("cls");
 	}
 }

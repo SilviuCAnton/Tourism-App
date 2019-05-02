@@ -69,7 +69,7 @@ public:
 	Out: 
 		- offers - offer list
 	*/
-	const std::vector<Offer>& getAllOffers() const noexcept;
+	const std::vector<Offer>& getAllOffers() const;
 
 	/*
 	Description: finds all the offers with names mactching a sequence of characters 
@@ -148,3 +148,4 @@ public:
 	//Exports wishlist as a CSV file
 	void exportWishlistCSV(std::string saveName) const;
 };
+

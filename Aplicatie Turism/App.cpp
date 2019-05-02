@@ -11,6 +11,7 @@ int main() {
 		FunctionalityTest::testAll();
 		OfferValidator myValidator{};
 		FileRepository myRepo{"repository.txt"};
+		//ProbabilityRepo myRepo{ 0.5 };
 		Wishlist myWishlist{};
 		Service myService{ myRepo, myValidator, myWishlist };
 		Console myConsole{ myService };

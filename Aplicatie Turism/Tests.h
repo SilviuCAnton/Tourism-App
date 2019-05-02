@@ -7,5 +7,9 @@ namespace FunctionalityTest{
 	void testFind();
 	void testFilters();
 	void testSortings();
+	void testWishlist();
+	void testStatistics();
+	void testUndo();
+	void testProbabilityRepo();
 	void testAll();
 }
