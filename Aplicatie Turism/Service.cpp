@@ -84,6 +84,15 @@ const std::vector<Offer>& Service::getAllOffers() const {
 	return this->repository.getAll();
 }
 
+const Offer & Service::findById(int id) {
+	for (const auto& offer : getAllOffers()) {
+		if (offer.getId() == id) {
+			return offer;
+		}
+	}
+	throw InexistentItemException("Oferta cu id-ul cautat nu exista!!");
+}
+
 std::vector<Offer> Service::findByName(std::string sequence) const {
 	std::vector<Offer> filteredOffers;
 	const std::vector<Offer>& offers = this->repository.getAll();

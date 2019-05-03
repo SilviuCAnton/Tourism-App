@@ -71,6 +71,9 @@ public:
 	*/
 	const std::vector<Offer>& getAllOffers() const;
 
+	//finds offer by id
+	const Offer& findById(int);
+
 	/*
 	Description: finds all the offers with names mactching a sequence of characters 
 

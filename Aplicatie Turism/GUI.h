@@ -1,4 +1,5 @@
 #pragma once
+#include <qstring.h>
 #include <qwidget.h>
 #include <Service.h>
 #include <qthread.h>
@@ -27,6 +28,8 @@ public:
 private:
 	Service& service;
 	void buildGUI();
+	void reloadList(std::vector<Offer>);
+	void connectSignalsAndSlots();
 
 	//Buttons
 	QPushButton* removeButton = new QPushButton("Remove");
@@ -46,9 +49,9 @@ private:
 	QListWidget* offerList = new QListWidget;
 
 	//Text fields
-	QTextEdit* nameTextEdit = new QTextEdit;
-	QTextEdit* destinationTextEdit = new QTextEdit;
-	QTextEdit* typeTextEdit = new QTextEdit;
-	QTextEdit* priceTextEdit = new QTextEdit;
+	QLineEdit* nameTextEdit = new QLineEdit;
+	QLineEdit* destinationTextEdit = new QLineEdit;
+	QLineEdit* typeTextEdit = new QLineEdit;
+	QLineEdit* priceTextEdit = new QLineEdit;
 };
 
