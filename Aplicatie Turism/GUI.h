@@ -31,6 +31,9 @@ private:
 	void reloadList(std::vector<Offer>);
 	void connectSignalsAndSlots();
 
+	//aux
+	int offerId;
+
 	//Buttons
 	QPushButton* removeButton = new QPushButton("Remove");
 	QPushButton* sortByNameButton = new QPushButton("SortByName");

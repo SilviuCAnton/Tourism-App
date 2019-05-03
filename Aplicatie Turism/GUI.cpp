@@ -29,6 +29,7 @@ void GUI::buildGUI() {
 	QWidget* leftButtonList = new QWidget;
 	leftButtonList->setLayout(leftHorziontalLayout);
 	leftHorziontalLayout->addWidget(removeButton);
+	removeButton->setDisabled(true);
 	leftHorziontalLayout->addWidget(sortByNameButton);
 	leftHorziontalLayout->addWidget(sortByDestinationButton);
 	leftHorziontalLayout->addWidget(sortByTypeAndPriceButton);
@@ -78,6 +79,7 @@ void GUI::buildGUI() {
 	topActions->setLayout(topActionsLayout);
 	topActionsLayout->addWidget(addButton);
 	topActionsLayout->addWidget(modifyButton);
+	modifyButton->setDisabled(true);
 
 	//Actions - bottom
 	QWidget* bottomActions = new QWidget;
@@ -126,6 +128,8 @@ void GUI::reloadList(std::vector<Offer> offers) {
 void GUI::connectSignalsAndSlots() {
 	QObject::connect(offerList, &QListWidget::itemSelectionChanged, [&]() {
 		if (!offerList->selectedItems().isEmpty()) {
+			removeButton->setEnabled(true);
+			modifyButton->setEnabled(true);
 			const Offer& myOffer{ service.findById(offerList->selectedItems().first()->data(Qt::UserRole).toInt()) };
 			nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
 			destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
@@ -133,6 +137,10 @@ void GUI::connectSignalsAndSlots() {
 			std::stringstream ss{};
 			ss << myOffer.getPrice();
 			priceTextEdit->setText(QString::fromStdString(ss.str()));
+		}
+		else {
+			removeButton->setDisabled(true);
+			modifyButton->setDisabled(true);
 		}
  	});
 
@@ -152,10 +160,143 @@ void GUI::connectSignalsAndSlots() {
 	});
 
 	QObject::connect(removeButton, &QPushButton::clicked, [&]() {
-		int offerId{ offerList->selectedItems().first()->data(Qt::UserRole).toInt() };
+		offerId = offerList->selectedItems().first()->data(Qt::UserRole).toInt();
 		offerList->clearSelection();
 		service.removeOffer(offerId);
 		reloadList(service.getAllOffers());
+	});
+
+	QObject::connect(addButton, &QPushButton::clicked, [&]() {
+		if (addButton->text() == "Add") {
+			addButton->setText("Ok");
+			nameTextEdit->clear();
+			nameTextEdit->setEnabled(true);
+			destinationTextEdit->clear();
+			destinationTextEdit->setEnabled(true);
+			typeTextEdit->clear();
+			typeTextEdit->setEnabled(true);
+			priceTextEdit->clear();
+			priceTextEdit->setEnabled(true);
+
+			modifyButton->setDisabled(true);
+			filterByNameButton->setDisabled(true);
+			filterByDestinationButton->setDisabled(true);
+			filterByPriceButton->setDisabled(true);
+			undoButton->setDisabled(true);
+			redoButton->setDisabled(true);
+			wishlistButton->setDisabled(true);
+			removeButton->setDisabled(true);
+			sortByNameButton->setDisabled(true);
+			sortByDestinationButton->setDisabled(true);
+			sortByTypeAndPriceButton->setDisabled(true);
+		}
+		else {
+			modifyButton->setEnabled(true);
+			filterByNameButton->setEnabled(true);
+			filterByDestinationButton->setEnabled(true);
+			filterByPriceButton->setEnabled(true);
+			undoButton->setEnabled(true);
+			redoButton->setEnabled(true);
+			wishlistButton->setEnabled(true);
+			removeButton->setEnabled(true);
+			sortByNameButton->setEnabled(true);
+			sortByDestinationButton->setEnabled(true);
+			sortByTypeAndPriceButton->setEnabled(true);
+
+			try {
+				std::string name = nameTextEdit->text().toStdString();
+				std::string destination = destinationTextEdit->text().toStdString();
+				std::string type = typeTextEdit->text().toStdString();
+				double price = priceTextEdit->text().toDouble();
+
+				service.addOffer(name, destination, type, price);
+				offerList->clearSelection();
+				reloadList(service.getAllOffers());
+			}
+			catch (DuplicateItemException& die) {
+				QErrorMessage err(this);
+				err.setMinimumSize(200, 100);
+				std::stringstream ss{};
+				ss << die;
+				err.showMessage(QString::fromStdString(ss.str()));
+				err.exec();
+			}
+
+			addButton->setText("Add");
+			nameTextEdit->clear();
+			nameTextEdit->setDisabled(true);
+			destinationTextEdit->clear();
+			destinationTextEdit->setDisabled(true);
+			typeTextEdit->clear();
+			typeTextEdit->setDisabled(true);
+			priceTextEdit->clear();
+			priceTextEdit->setDisabled(true);
+		}
+	});
+
+	QObject::connect(modifyButton, &QPushButton::clicked, [&]() {
+		if (modifyButton->text() == "Modify") {
+			offerId = offerList->selectedItems().first()->data(Qt::UserRole).toInt();
+			modifyButton->setText("Ok");
+			nameTextEdit->setEnabled(true);
+			destinationTextEdit->setEnabled(true);
+			typeTextEdit->setEnabled(true);
+			priceTextEdit->setEnabled(true);
+
+			addButton->setDisabled(true);
+			filterByNameButton->setDisabled(true);
+			filterByDestinationButton->setDisabled(true);
+			filterByPriceButton->setDisabled(true);
+			undoButton->setDisabled(true);
+			redoButton->setDisabled(true);
+			wishlistButton->setDisabled(true);
+			removeButton->setDisabled(true);
+			sortByNameButton->setDisabled(true);
+			sortByDestinationButton->setDisabled(true);
+			sortByTypeAndPriceButton->setDisabled(true);
+		}
+		else {
+			addButton->setEnabled(true);
+			filterByNameButton->setEnabled(true);
+			filterByDestinationButton->setEnabled(true);
+			filterByPriceButton->setEnabled(true);
+			undoButton->setEnabled(true);
+			redoButton->setEnabled(true);
+			wishlistButton->setEnabled(true);
+			removeButton->setEnabled(true);
+			sortByNameButton->setEnabled(true);
+			sortByDestinationButton->setEnabled(true);
+			sortByTypeAndPriceButton->setEnabled(true);
+
+			try {
+				std::string name = nameTextEdit->text().toStdString();
+				std::string destination = destinationTextEdit->text().toStdString();
+				std::string type = typeTextEdit->text().toStdString();
+				double price = priceTextEdit->text().toDouble();
+
+				service.modifyOffer(offerId, name, destination, type, price);
+				offerList->clearSelection();
+				reloadList(service.getAllOffers());
+			}
+			catch (DuplicateItemException& die) {
+				QErrorMessage err(this);
+				err.setMinimumSize(200, 100);
+				std::stringstream ss{};
+				ss << die;
+				err.showMessage(QString::fromStdString(ss.str()));
+				err.exec();
+			}
+
+			modifyButton->setText("Modify");
+			nameTextEdit->clear();
+			nameTextEdit->setDisabled(true);
+			destinationTextEdit->clear();
+			destinationTextEdit->setDisabled(true);
+			typeTextEdit->clear();
+			typeTextEdit->setDisabled(true);
+			priceTextEdit->clear();
+			priceTextEdit->setDisabled(true);
+		}
 	});
 
 	QObject::connect(filterByNameButton, &QPushButton::clicked, [&]() {
