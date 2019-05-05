@@ -142,7 +142,8 @@ void GUI::connectSignalsAndSlots() {
 			removeButton->setDisabled(true);
 			modifyButton->setDisabled(true);
 		}
- 	});
+	});
+
 
 	QObject::connect(sortByNameButton, &QPushButton::clicked, [&]() {
 		offerList->clearSelection();
@@ -164,6 +165,11 @@ void GUI::connectSignalsAndSlots() {
 		offerList->clearSelection();
 		service.removeOffer(offerId);
 		reloadList(service.getAllOffers());
+	});
+
+	QObject::connect(wishlistButton, &QPushButton::clicked, [&]() {
+		wishGUI->loadList(service.getAllOffers());
+		wishGUI->show();
 	});
 
 	QObject::connect(addButton, &QPushButton::clicked, [&]() {

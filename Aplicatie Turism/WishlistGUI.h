@@ -20,11 +20,11 @@
 #include <qdebug.h>
 #include <QTableWidget>
 #include <qcolor.h>
-#include <WishlistGUI.h>
 
-class GUI : public QWidget {
+class WishlistGUI : public QWidget {
 public:
-	GUI(Service& serv);
+	WishlistGUI(Service& service);
+	void loadList(std::vector<Offer>);
 
 private:
 	Service& service;
@@ -32,33 +32,20 @@ private:
 	void reloadList(std::vector<Offer>);
 	void connectSignalsAndSlots();
 
-	//aux
-	int offerId;
-
-	//Buttons
-	QPushButton* removeButton = new QPushButton("Remove");
-	QPushButton* sortByNameButton = new QPushButton("SortByName");
-	QPushButton* sortByDestinationButton = new QPushButton("SortByDestination");
-	QPushButton* sortByTypeAndPriceButton = new QPushButton("SortByTypeAndPrice");
-	QPushButton* addButton = new QPushButton("Add");
-	QPushButton* modifyButton = new QPushButton("Modify");
-	QPushButton* filterByNameButton = new QPushButton("FilterByName");
-	QPushButton* filterByDestinationButton = new QPushButton("FilterByDestination");
-	QPushButton* filterByPriceButton = new QPushButton("FilterByPrice");
-	QPushButton* undoButton = new QPushButton("Undo");
-	QPushButton* redoButton = new QPushButton("Redo");
-	QPushButton* wishlistButton = new QPushButton("MyWishlist");
-
 	//List
 	QListWidget* offerList = new QListWidget;
+	QListWidget* wishList = new QListWidget;
+
+	//Buttons
+	QPushButton* addButton = new QPushButton("Add");
+	QPushButton* clearButton = new QPushButton("Clear");
+	QPushButton* populateButton = new QPushButton("Populate");
+	QPushButton* exportButton = new QPushButton("ExportCSV");
 
 	//Text fields
 	QLineEdit* nameTextEdit = new QLineEdit;
 	QLineEdit* destinationTextEdit = new QLineEdit;
 	QLineEdit* typeTextEdit = new QLineEdit;
 	QLineEdit* priceTextEdit = new QLineEdit;
-
-	//WishlistGUI
-	WishlistGUI* wishGUI = new WishlistGUI{ service };
 };
 

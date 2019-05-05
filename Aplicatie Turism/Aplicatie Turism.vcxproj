@@ -124,6 +124,7 @@
     <ClCompile Include="Undo.cpp" />
     <ClCompile Include="Validator.cpp" />
     <ClCompile Include="Wishlist.cpp" />
+    <ClCompile Include="WishlistGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AplicatieTurism.ui" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Undo.h" />
     <ClInclude Include="Validator.h" />
     <ClInclude Include="Wishlist.h" />
+    <ClInclude Include="WishlistGUI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
