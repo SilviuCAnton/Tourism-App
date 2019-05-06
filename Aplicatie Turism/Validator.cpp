@@ -6,7 +6,7 @@ void OfferValidator::validate(const Offer& offer) const {
 		throw ValidException("Nume nu poate fi vid!!!");
 	}
 	if (offer.getPrice() <= 0) {
-		throw ValidException("Pretul nu poate fi mai mic sau egal decat 0!!!");
+		throw ValidException("Pretul trebuie sa fie un numar pozitiv!!!");
 	}
 	if (offer.getDestination().size() == 0) {
 		throw ValidException("Destinatie nu poate fi vida!!!");

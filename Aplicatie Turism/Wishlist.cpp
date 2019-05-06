@@ -43,6 +43,9 @@ void Wishlist::emptyWishlist() noexcept {
 }
 
 void Wishlist::populateWishlist(int number, std::vector<Offer> offers) {
+	if (number > offers.size()) {
+		number = offers.size();
+	}
 	items.clear();
 	const unsigned int seed{ static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()) };
 	std::shuffle(offers.begin(), offers.end(), std::default_random_engine(seed));
@@ -58,6 +61,9 @@ const int Wishlist::getSize() const noexcept {
 }
 
 void Wishlist::exportCSV(std::string saveName) const {
+	if (items.size() == 0) {
+		throw InexistentItemException("Wishlistul este gol!!!");
+	}
 	saveName = saveName + ".csv";
 	std::ofstream f(saveName);
 	for (const auto& offer : items) {

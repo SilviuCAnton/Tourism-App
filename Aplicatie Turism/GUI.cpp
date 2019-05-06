@@ -3,6 +3,8 @@
 #include <qerrormessage.h>
 #include <qobject.h>
 #include <qinputdialog.h>
+#include <qboxlayout.h>
+#include <qlabel.h>
 #include <sstream>
 
 GUI::GUI(Service& serv) : service{ serv } {
@@ -227,6 +229,14 @@ void GUI::connectSignalsAndSlots() {
 				err.showMessage(QString::fromStdString(ss.str()));
 				err.exec();
 			}
+			catch (ValidException& ve) {
+				QErrorMessage err(this);
+				err.setMinimumSize(200, 100);
+				std::stringstream ss{};
+				ss << ve;
+				err.showMessage(QString::fromStdString(ss.str()));
+				err.exec();
+			}
 
 			addButton->setText("Add");
 			nameTextEdit->clear();
@@ -289,6 +299,14 @@ void GUI::connectSignalsAndSlots() {
 				err.setMinimumSize(200, 100);
 				std::stringstream ss{};
 				ss << die;
+				err.showMessage(QString::fromStdString(ss.str()));
+				err.exec();
+			}
+			catch (ValidException& ve) {
+				QErrorMessage err(this);
+				err.setMinimumSize(200, 100);
+				std::stringstream ss{};
+				ss << ve;
 				err.showMessage(QString::fromStdString(ss.str()));
 				err.exec();
 			}

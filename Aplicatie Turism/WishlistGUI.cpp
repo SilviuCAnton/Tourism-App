@@ -1,6 +1,10 @@
 #include "WishlistGUI.h"
 #include <sstream>
 #include <qinputdialog.h>
+#include <qlayout.h>
+#include <qlabel.h>
+#include <qerrormessage.h>
+#include <Exceptions.h>
 
 WishlistGUI::WishlistGUI(Service& serv) : service{ serv } {
 	buildGUI();
@@ -152,19 +156,39 @@ void WishlistGUI::connectSignalsAndSlots() {
 	});
 
 	QObject::connect(addButton, &QPushButton::clicked, [&]() {
-		int offerId = offerList->selectedItems().first()->data(Qt::UserRole).toInt();
-		offerList->clearSelection();
-		service.addToWishlist(offerId);
-		reloadList(service.getWishlist());
+		try {
+			int offerId = offerList->selectedItems().first()->data(Qt::UserRole).toInt();
+			offerList->clearSelection();
+			service.addToWishlist(offerId);
+			reloadList(service.getWishlist());
+		}
+		catch (DuplicateItemException& die) {
+			QErrorMessage err(this);
+			err.setMinimumSize(200, 100);
+			std::stringstream ss{};
+			ss << die;
+			err.showMessage(QString::fromStdString(ss.str()));
+			err.exec();
+		}
 	});
 
 	QObject::connect(exportButton, &QPushButton::clicked, [&]() {
-		QInputDialog inputDialog;
-		inputDialog.setMinimumSize(200, 100);
-		inputDialog.setLabelText("Introduceti numele cu care doriti sa fie salvat fisierul: ");
-		inputDialog.exec();
-		auto text = inputDialog.textValue();
-		std::string fileName = text.toStdString();
-		service.exportWishlistCSV(fileName);
+		try {
+			QInputDialog inputDialog;
+			inputDialog.setMinimumSize(200, 100);
+			inputDialog.setLabelText("Introduceti numele cu care doriti sa fie salvat fisierul: ");
+			inputDialog.exec();
+			auto text = inputDialog.textValue();
+			std::string fileName = text.toStdString();
+			service.exportWishlistCSV(fileName);
+		}
+		catch (InexistentItemException& iie) {
+			QErrorMessage err(this);
+			err.setMinimumSize(200, 100);
+			std::stringstream ss{};
+			ss << iie;
+			err.showMessage(QString::fromStdString(ss.str()));
+			err.exec();
+		}
 	});
 }

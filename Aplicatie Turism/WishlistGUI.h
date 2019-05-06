@@ -2,24 +2,9 @@
 #include <qstring.h>
 #include <qwidget.h>
 #include <Service.h>
-#include <qthread.h>
-#include <QtWidgets/qstatusbar.h>
-#include <QtWidgets/qmessagebox.h>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/qmainwindow.h>
 #include <QtWidgets/qlineedit.h>
 #include <QtWidgets/qlistwidget.h>
 #include <QtWidgets/qpushbutton.h>
-#include <QtWidgets/qcombobox.h>
-#include <QtWidgets/qboxlayout.h>
-#include <QtWidgets\qformlayout.h>
-#include <QtWidgets\qgridlayout.h>
-#include <QtWidgets\qspinbox.h>
-#include <qtextedit.h>
-#include <QLabel>
-#include <qdebug.h>
-#include <QTableWidget>
-#include <qcolor.h>
 
 class WishlistGUI : public QWidget {
 public:

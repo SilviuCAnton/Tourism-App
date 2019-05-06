@@ -20,8 +20,6 @@ void Service::addOffer(std::string name, std::string destination, std::string ty
 
 	this->repository.store(newOffer);
 
-	//const UndoAdd* undoPointer = new UndoAdd{ repository, newOffer };
-
 	while (undoIndex != undoList.size() - 1) {
 		undoList.pop_back();
 	}
@@ -49,7 +47,6 @@ void Service::modifyOffer(int id, std::string name, std::string destination, std
 	}
 
 	this->repository.update(newOffer);
-	//const UndoModify* undoPointer = new UndoModify{ repository, originalOffer, newOffer };
 
 	while (undoIndex != undoList.size() - 1) {
 		undoList.pop_back();
@@ -69,8 +66,6 @@ void Service::removeOffer(int id) {
 	}
 
 	this->repository.deleteElement(id);
-
-	//const UndoRemove* undoPointer = new UndoRemove{ repository, myOffer };
 
 	while (undoIndex != undoList.size() - 1) {
 		undoList.pop_back();
@@ -102,12 +97,6 @@ std::vector<Offer> Service::findByName(std::string sequence) const {
 	});
 
 	return filteredOffers;
-
-	/*std::for_each(offers.begin(), offers.end(), [&filteredOffers, &sequence](const auto& offer) {
-		if (offer.getName().find(sequence) != std::string::npos) {
-			filteredOffers.push_back(offer);
-		}
-	});*/
 }
 
 std::vector<Offer> Service::filterByDestination(std::string destination) const {
@@ -119,11 +108,6 @@ std::vector<Offer> Service::filterByDestination(std::string destination) const {
 	});
 
 	return filteredOffers;
-
-	/*std::for_each(offers.begin(), offers.end(), [&filteredOffers, &destination](const auto& offer) {
-		if (offer.getDestination() == destination)
-			filteredOffers.push_back(offer);
-	});*/
 }
 
 std::vector<Offer> Service::filterByPrice(double price) const {
@@ -135,11 +119,6 @@ std::vector<Offer> Service::filterByPrice(double price) const {
 	});
 
 	return filteredOffers;
-
-	/*std::for_each(offers.begin(), offers.end(), [&filteredOffers, &price](const auto& offer) {
-		if (offer.getPrice() <= price)
-			filteredOffers.push_back(offer);
-	});*/
 }
 
 std::vector<Offer> Service::sortByName() const {
@@ -151,10 +130,6 @@ std::vector<Offer> Service::sortByName() const {
 	});
 
 	return copyOffers;
-
-	/*copyOffers.sort([](const auto& offer1, const auto& offer2) {
-		return offer1.getName() <= offer2.getName();
-	});*/
 }
 
 std::vector<Offer> Service::sortByDestination() const {
@@ -167,10 +142,6 @@ std::vector<Offer> Service::sortByDestination() const {
 	});
 
 	return copyOffers;
-
-	/*copyOffers.sort([](const auto& offer1, const auto& offer2) {
-		return offer1.getDestination() <= offer2.getDestination();
-	});*/
 }
 
 std::vector<Offer> Service::sortByTypeAndPrice() const {
@@ -185,13 +156,6 @@ std::vector<Offer> Service::sortByTypeAndPrice() const {
 	});
 
 	return copyOffers;
-
-	/*copyOffers.sort([](const auto& offer1, const auto& offer2) {
-		if (offer1.getType() != offer2.getType()) {
-			return offer1.getType() <= offer2.getType();
-		}
-		return offer1.getPrice() >= offer2.getPrice();
-	});*/
 }
 
 void Service::addToWishlist(int id) {
