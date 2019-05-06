@@ -45,4 +45,3 @@ private:
 	//WishlistGUI
 	WishlistGUI* wishGUI = new WishlistGUI{ service };
 };
-

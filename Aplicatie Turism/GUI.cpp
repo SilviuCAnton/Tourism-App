@@ -6,6 +6,7 @@
 #include <qboxlayout.h>
 #include <qlabel.h>
 #include <sstream>
+#include <qcolor.h>
 
 GUI::GUI(Service& serv) : service{ serv } {
 	buildGUI();
@@ -121,9 +122,26 @@ void GUI::buildGUI() {
 
 void GUI::reloadList(std::vector<Offer> offers) {
 	offerList->clear();
+	std::vector<Offer> sorted = service.sortByTypeAndPrice();
+
 	for (const auto& offer : offers) {
 		QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(offer.getName()), offerList);
 		item->setData(Qt::UserRole, offer.getId());
+		int len = sorted.size();
+		for (int i = 0; i < sorted.size(); i++) {
+			if (sorted.at(i) == offer) {
+				if ((double)i / len < 0.33) {
+					item->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
+				}
+				else if ((double)i / len < 0.66) {
+					item->setBackground(QBrush(Qt::green, Qt::SolidPattern));
+				}
+				else {
+					item->setBackground(QBrush(Qt::red, Qt::SolidPattern));
+				}
+				break;
+			}
+		}
 	}
 }
 
