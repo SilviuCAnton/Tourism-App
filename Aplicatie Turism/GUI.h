@@ -32,6 +32,7 @@ private:
 	QPushButton* undoButton = new QPushButton("Undo");
 	QPushButton* redoButton = new QPushButton("Redo");
 	QPushButton* wishlistButton = new QPushButton("MyWishlist");
+	QPushButton* statisticsButton = new QPushButton("TypeStatistics");
 
 	//List
 	QListWidget* offerList = new QListWidget;

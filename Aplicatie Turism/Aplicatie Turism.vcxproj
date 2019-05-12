@@ -120,6 +120,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Repository.cpp" />
     <ClCompile Include="Service.cpp" />
+    <ClCompile Include="StatisticsGUI.cpp" />
     <ClCompile Include="Tests.cpp" />
     <ClCompile Include="Undo.cpp" />
     <ClCompile Include="Validator.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Repository.h" />
     <ClInclude Include="Service.h" />
+    <ClInclude Include="StatisticsGUI.h" />
     <ClInclude Include="Tests.h" />
     <ClInclude Include="Undo.h" />
     <ClInclude Include="Validator.h" />

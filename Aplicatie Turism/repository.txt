@@ -1,5 +1,5 @@
 2	Oferta2	dest2	tip1	323
 3	Oferta3	dest3	tip2	63.23
+5	Oferta5	dest2	type3	240
 1	Oferta1	dest1	tip1	33.24
 4	Oferta4	lala	type2	234.23
-5	Oferta5	dest2	type3	240

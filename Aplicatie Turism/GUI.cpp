@@ -7,6 +7,8 @@
 #include <qlabel.h>
 #include <sstream>
 #include <qcolor.h>
+#include <StatisticsGUI.h>
+#include <qmessagebox.h>
 
 GUI::GUI(Service& serv) : service{ serv } {
 	buildGUI();
@@ -103,6 +105,7 @@ void GUI::buildGUI() {
 	topRightLayout->addWidget(undoButton);
 	topRightLayout->addWidget(redoButton);
 	topRightLayout->addStretch();
+	topRightLayout->addWidget(statisticsButton);
 	topRightLayout->addWidget(wishlistButton);
 
 	//Right side
@@ -192,6 +195,11 @@ void GUI::connectSignalsAndSlots() {
 		wishGUI->show();
 	});
 
+	QObject::connect(statisticsButton, &QPushButton::clicked, [&]() {
+		StatisticsGUI* statGUI = new StatisticsGUI(service.typeStatistic());
+		statGUI->show();
+	});
+
 	QObject::connect(addButton, &QPushButton::clicked, [&]() {
 		if (addButton->text() == "Add") {
 			addButton->setText("Ok");
@@ -240,20 +248,14 @@ void GUI::connectSignalsAndSlots() {
 				reloadList(service.getAllOffers());
 			}
 			catch (DuplicateItemException& die) {
-				QErrorMessage err(this);
-				err.setMinimumSize(200, 100);
 				std::stringstream ss{};
 				ss << die;
-				err.showMessage(QString::fromStdString(ss.str()));
-				err.exec();
+				QMessageBox::critical(this, tr("Error"), tr(ss.str().c_str()));
 			}
 			catch (ValidException& ve) {
-				QErrorMessage err(this);
-				err.setMinimumSize(200, 100);
 				std::stringstream ss{};
 				ss << ve;
-				err.showMessage(QString::fromStdString(ss.str()));
-				err.exec();
+				QMessageBox::critical(this, tr("Error"), tr(ss.str().c_str()));
 			}
 
 			addButton->setText("Add");
@@ -313,20 +315,14 @@ void GUI::connectSignalsAndSlots() {
 				reloadList(service.getAllOffers());
 			}
 			catch (DuplicateItemException& die) {
-				QErrorMessage err(this);
-				err.setMinimumSize(200, 100);
 				std::stringstream ss{};
 				ss << die;
-				err.showMessage(QString::fromStdString(ss.str()));
-				err.exec();
+				QMessageBox::critical(this, tr("Error"), tr(ss.str().c_str()));
 			}
 			catch (ValidException& ve) {
-				QErrorMessage err(this);
-				err.setMinimumSize(200, 100);
 				std::stringstream ss{};
 				ss << ve;
-				err.showMessage(QString::fromStdString(ss.str()));
-				err.exec();
+				QMessageBox::critical(this, tr("Error"), tr(ss.str().c_str()));
 			}
 
 			modifyButton->setText("Modify");
@@ -380,12 +376,9 @@ void GUI::connectSignalsAndSlots() {
 			reloadList(service.getAllOffers());
 		}
 		catch (ValidException& ve) {
-			QErrorMessage err(this);
-			err.setMinimumSize(200, 100);
 			std::stringstream ss{};
 			ss << ve;
-			err.showMessage(QString::fromStdString(ss.str()));
-			err.exec();
+			QMessageBox::critical(this, tr("Error"), tr(ss.str().c_str()));
 		}
 	});
 
@@ -395,12 +388,9 @@ void GUI::connectSignalsAndSlots() {
 			reloadList(service.getAllOffers());
 		}
 		catch (ValidException& ve) {
-			QErrorMessage err(this);
-			err.setMinimumSize(200, 100);
 			std::stringstream ss{};
 			ss << ve;
-			err.showMessage(QString::fromStdString(ss.str()));
-			err.exec();
+			QMessageBox::critical(this, tr("Error"), tr(ss.str().c_str()));
 		}
 	});
 }
