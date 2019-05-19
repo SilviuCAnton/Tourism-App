@@ -1,8 +1,8 @@
 #pragma once
-#include <qstring.h>
-#include <qwidget.h>
+#include <QtCore/qstring.h>
+#include <QtWidgets/qwidget.h>
 #include <Service.h>
-#include <qtablewidget.h>
+#include <QtWidgets/qtablewidget.h>
 #include <QtWidgets/qpushbutton.h>
 
 class StatisticsGUI : public QWidget {

@@ -1,6 +1,6 @@
 #pragma once
-#include <qstring.h>
-#include <qwidget.h>
+#include <QtCore/qstring.h>
+#include <QtWidgets/qwidget.h>
 #include <Service.h>
 #include <QtWidgets/qlineedit.h>
 #include <QtWidgets/qlistwidget.h>

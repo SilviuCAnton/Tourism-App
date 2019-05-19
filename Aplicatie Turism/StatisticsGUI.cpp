@@ -1,7 +1,7 @@
 #include "StatisticsGUI.h"
-#include <qboxlayout.h>
+#include <QtWidgets/qboxlayout.h>
 #include <sstream>
-#include <qheaderview.h>
+#include <QtWidgets/qheaderview.h>
 
 StatisticsGUI::StatisticsGUI(std::vector<TypeCountDTO> items) : items { items } {
 	buildGUI(items);
@@ -25,6 +25,7 @@ void StatisticsGUI::buildGUI(std::vector<TypeCountDTO> items) {
 	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	table->setSelectionBehavior(QAbstractItemView::SelectRows);
 	table->setSelectionMode(QAbstractItemView::SingleSelection);
+	setWindowModality(Qt::ApplicationModal);
 }
 
 void StatisticsGUI::loadTable(std::vector<TypeCountDTO> items) {

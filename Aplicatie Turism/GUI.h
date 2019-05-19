@@ -1,10 +1,11 @@
 #pragma once
-#include <qwidget.h>
+#include <QtWidgets/qwidget.h>
 #include <Service.h>
 #include <QtWidgets/qlineedit.h>
 #include <QtWidgets/qlistwidget.h>
 #include <QtWidgets/qpushbutton.h>
 #include <WishlistGUI.h>
+#include <QtWidgets/qtablewidget.h>
 
 class GUI : public QWidget {
 public:
@@ -13,7 +14,8 @@ public:
 private:
 	Service& service;
 	void buildGUI();
-	void reloadList(std::vector<Offer>);
+	//void reloadList(std::vector<Offer>);
+	void reloadTable(std::vector<Offer>);
 	void connectSignalsAndSlots();
 
 	//aux
@@ -34,8 +36,9 @@ private:
 	QPushButton* wishlistButton = new QPushButton("MyWishlist");
 	QPushButton* statisticsButton = new QPushButton("TypeStatistics");
 
-	//List
-	QListWidget* offerList = new QListWidget;
+	/*List
+	QListWidget* offerList = new QListWidget;*/
+	QTableWidget* offerTable = new QTableWidget;
 
 	//Text fields
 	QLineEdit* nameTextEdit = new QLineEdit;

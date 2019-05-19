@@ -1,9 +1,9 @@
 #include "WishlistGUI.h"
 #include <sstream>
-#include <qinputdialog.h>
-#include <qlayout.h>
-#include <qlabel.h>
-#include <qerrormessage.h>
+#include <QtWidgets/qinputdialog.h>
+#include <QtWidgets/qlayout.h>
+#include <QtWidgets/qlabel.h>
+#include <QtWidgets/qerrormessage.h>
 #include <Exceptions.h>
 
 WishlistGUI::WishlistGUI(Service& serv) : service{ serv } {
@@ -89,6 +89,7 @@ void WishlistGUI::buildGUI() {
 	//Main panel
 	horziontalLayout->addWidget(left);
 	horziontalLayout->addWidget(right);
+	setWindowModality(Qt::ApplicationModal);
 }
 
 void WishlistGUI::loadList(std::vector<Offer> offers) {

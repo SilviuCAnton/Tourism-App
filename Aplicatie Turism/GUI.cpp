@@ -1,19 +1,20 @@
 #include "GUI.h"
 #include "Exceptions.h"
-#include <qerrormessage.h>
-#include <qobject.h>
-#include <qinputdialog.h>
-#include <qboxlayout.h>
-#include <qlabel.h>
+#include <QtWidgets//qerrormessage.h>
+#include <QtCore/qobject.h>
+#include <QtWidgets/qinputdialog.h>
+#include <QtWidgets/qboxlayout.h>
+#include <QtWidgets/qlabel.h>
 #include <sstream>
-#include <qcolor.h>
+#include <QtGui/qcolor.h>
 #include <StatisticsGUI.h>
-#include <qmessagebox.h>
+#include <QtWidgets/qmessagebox.h>
+#include <QtCore/qstringlist.h>
 
 GUI::GUI(Service& serv) : service{ serv } {
 	buildGUI();
 	connectSignalsAndSlots();
-	reloadList(service.getAllOffers());
+	reloadTable(service.getAllOffers());
 }
 
 void GUI::buildGUI() {
@@ -42,7 +43,7 @@ void GUI::buildGUI() {
 	//Left side
 	QWidget* left = new QWidget;
 	left->setLayout(leftVerticalLayout);
-	leftVerticalLayout->addWidget(offerList);
+	leftVerticalLayout->addWidget(offerTable);
 	leftVerticalLayout->addWidget(leftButtonList);
 
 	//Details - labels
@@ -104,8 +105,8 @@ void GUI::buildGUI() {
 	topRight->setLayout(topRightLayout);
 	topRightLayout->addWidget(undoButton);
 	topRightLayout->addWidget(redoButton);
-	topRightLayout->addStretch();
 	topRightLayout->addWidget(statisticsButton);
+	topRightLayout->addStretch();
 	topRightLayout->addWidget(wishlistButton);
 
 	//Right side
@@ -116,40 +117,113 @@ void GUI::buildGUI() {
 	rightVerticalLayout->addWidget(actions);
 
 	//List setup
-	offerList->setSelectionMode(QAbstractItemView::SingleSelection);
+	//offerList->setSelectionMode(QAbstractItemView::SingleSelection);
+
+	//Table setup
+	offerTable->setSelectionMode(QAbstractItemView::SingleSelection);
+	offerTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+	offerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	//Main panel
 	horziontalLayout->addWidget(left);
 	horziontalLayout->addWidget(right);
+	
 }
 
-void GUI::reloadList(std::vector<Offer> offers) {
-	offerList->clear();
+//void GUI::reloadList(std::vector<Offer> offers) {
+//	offerList->clear();
+//	std::vector<Offer> sorted = service.sortByTypeAndPrice();
+//
+//	for (const auto& offer : offers) {
+//		QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(offer.getName()), offerList);
+//		item->setData(Qt::UserRole, offer.getId());
+//		int len = sorted.size();
+//		for (int i = 0; i < sorted.size(); i++) {
+//			if (sorted.at(i) == offer) {
+//				if ((double)i / len < 0.33) {
+//					item->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
+//				}
+//				else if ((double)i / len < 0.66) {
+//					item->setBackground(QBrush(Qt::green, Qt::SolidPattern));
+//				}
+//				else {
+//					item->setBackground(QBrush(Qt::red, Qt::SolidPattern));
+//				}
+//				break;
+//			}
+//		}
+//	}
+//}
+
+void GUI::reloadTable(std::vector<Offer> offers) {
+	offerTable->clear();
 	std::vector<Offer> sorted = service.sortByTypeAndPrice();
+	offerTable->setRowCount(offers.size());
+	offerTable->setColumnCount(5);
+	QStringList myStringList;
+	myStringList.append("Name");
+	myStringList.append("Destination");
+	myStringList.append("Type");
+	myStringList.append("Price");
+	myStringList.append("TypeCount");
+	offerTable->setHorizontalHeaderLabels(myStringList);
+	std::vector<TypeCountDTO> vct = service.typeStatistic();
+	int row{ 0 };
 
 	for (const auto& offer : offers) {
-		QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(offer.getName()), offerList);
-		item->setData(Qt::UserRole, offer.getId());
+		int count{ 0 };
+		for (const auto& dto : vct) {
+			if (dto.getType() == offer.getType()) {
+				count = dto.getCount();
+			}
+		}
+
+		QTableWidgetItem* name = new QTableWidgetItem(QString::fromStdString(offer.getName()));
+		name->setData(Qt::UserRole, offer.getId());
+		QTableWidgetItem* destination = new QTableWidgetItem(QString::fromStdString(offer.getDestination()));
+		QTableWidgetItem* type = new QTableWidgetItem(QString::fromStdString(offer.getType()));
+		QTableWidgetItem* price = new QTableWidgetItem(QString::number(offer.getPrice()));
+		QTableWidgetItem* typeCount = new QTableWidgetItem(QString::number(count));
+
 		int len = sorted.size();
 		for (int i = 0; i < sorted.size(); i++) {
 			if (sorted.at(i) == offer) {
 				if ((double)i / len < 0.33) {
-					item->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
+					name->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
+					destination->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
+					type->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
+					price->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
+					typeCount->setBackground(QBrush(Qt::blue, Qt::SolidPattern));
 				}
 				else if ((double)i / len < 0.66) {
-					item->setBackground(QBrush(Qt::green, Qt::SolidPattern));
+					name->setBackground(QBrush(Qt::green, Qt::SolidPattern));
+					destination->setBackground(QBrush(Qt::green, Qt::SolidPattern));
+					type->setBackground(QBrush(Qt::green, Qt::SolidPattern));
+					price->setBackground(QBrush(Qt::green, Qt::SolidPattern));
+					typeCount->setBackground(QBrush(Qt::green, Qt::SolidPattern));
 				}
 				else {
-					item->setBackground(QBrush(Qt::red, Qt::SolidPattern));
+					name->setBackground(QBrush(Qt::red, Qt::SolidPattern));
+					destination->setBackground(QBrush(Qt::red, Qt::SolidPattern));
+					type->setBackground(QBrush(Qt::red, Qt::SolidPattern));
+					price->setBackground(QBrush(Qt::red, Qt::SolidPattern));
+					typeCount->setBackground(QBrush(Qt::red, Qt::SolidPattern));
 				}
 				break;
 			}
 		}
+
+		offerTable->setItem(row, 0, name);
+		offerTable->setItem(row, 1, destination);
+		offerTable->setItem(row, 2, type);
+		offerTable->setItem(row, 3, price);
+		offerTable->setItem(row, 4, typeCount);
+		row++;
 	}
 }
 
 void GUI::connectSignalsAndSlots() {
-	QObject::connect(offerList, &QListWidget::itemSelectionChanged, [&]() {
+	/*QObject::connect(offerList, &QListWidget::itemSelectionChanged, [&]() {
 		if (!offerList->selectedItems().isEmpty()) {
 			removeButton->setEnabled(true);
 			modifyButton->setEnabled(true);
@@ -164,30 +238,65 @@ void GUI::connectSignalsAndSlots() {
 		else {
 			removeButton->setDisabled(true);
 			modifyButton->setDisabled(true);
+			nameTextEdit->clear();
+			destinationTextEdit->clear();
+			typeTextEdit->clear();
+			priceTextEdit->clear();
+		}
+	});*/
+
+	QObject::connect(offerTable, &QTableWidget::itemSelectionChanged, [&]() {
+		if (!offerTable->selectedItems().isEmpty()) {
+			removeButton->setEnabled(true);
+			modifyButton->setEnabled(true);
+			const Offer& myOffer{ service.findById(offerTable->selectedItems().first()->data(Qt::UserRole).toInt()) };
+			nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
+			destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
+			typeTextEdit->setText(QString::fromStdString(myOffer.getType()));
+			std::stringstream ss{};
+			ss << myOffer.getPrice();
+			priceTextEdit->setText(QString::fromStdString(ss.str()));
+		}
+		else {
+			removeButton->setDisabled(true);
+			modifyButton->setDisabled(true);
+			nameTextEdit->clear();
+			destinationTextEdit->clear();
+			typeTextEdit->clear();
+			priceTextEdit->clear();
 		}
 	});
 
-
 	QObject::connect(sortByNameButton, &QPushButton::clicked, [&]() {
-		offerList->clearSelection();
-		reloadList(service.sortByName());
+		offerTable->clearSelection();
+		//offerList->clearSelection();
+		//reloadList(service.sortByName());
+		reloadTable(service.sortByName());
+
 	});
 
 	QObject::connect(sortByDestinationButton, &QPushButton::clicked, [&]() {
-		offerList->clearSelection();
-		reloadList(service.sortByDestination());
+		offerTable->clearSelection();
+		reloadTable(service.sortByDestination());
+		//offerList->clearSelection();
+		//reloadList(service.sortByDestination());
 	});
 
 	QObject::connect(sortByTypeAndPriceButton, &QPushButton::clicked, [&]() {
-		offerList->clearSelection();
-		reloadList(service.sortByTypeAndPrice());
+		/*offerList->clearSelection();
+		reloadList(service.sortByTypeAndPrice());*/
+		offerTable->clearSelection();
+		reloadTable(service.sortByTypeAndPrice());
 	});
 
 	QObject::connect(removeButton, &QPushButton::clicked, [&]() {
-		offerId = offerList->selectedItems().first()->data(Qt::UserRole).toInt();
-		offerList->clearSelection();
+		offerId = offerTable->selectedItems().first()->data(Qt::UserRole).toInt();
+		//offerList->clearSelection();
+		offerTable->clearSelection();
 		service.removeOffer(offerId);
-		reloadList(service.getAllOffers());
+		//reloadList(service.getAllOffers());
+		reloadTable(service.getAllOffers());
+
 	});
 
 	QObject::connect(wishlistButton, &QPushButton::clicked, [&]() {
@@ -244,8 +353,10 @@ void GUI::connectSignalsAndSlots() {
 				double price = priceTextEdit->text().toDouble();
 
 				service.addOffer(name, destination, type, price);
-				offerList->clearSelection();
-				reloadList(service.getAllOffers());
+				//offerList->clearSelection();
+				//reloadList(service.getAllOffers());
+				offerTable->clearSelection();
+				reloadTable(service.getAllOffers());
 			}
 			catch (DuplicateItemException& die) {
 				std::stringstream ss{};
@@ -272,7 +383,7 @@ void GUI::connectSignalsAndSlots() {
 
 	QObject::connect(modifyButton, &QPushButton::clicked, [&]() {
 		if (modifyButton->text() == "Modify") {
-			offerId = offerList->selectedItems().first()->data(Qt::UserRole).toInt();
+			offerId = offerTable->selectedItems().first()->data(Qt::UserRole).toInt();
 			modifyButton->setText("Ok");
 			nameTextEdit->setEnabled(true);
 			destinationTextEdit->setEnabled(true);
@@ -311,8 +422,10 @@ void GUI::connectSignalsAndSlots() {
 				double price = priceTextEdit->text().toDouble();
 
 				service.modifyOffer(offerId, name, destination, type, price);
-				offerList->clearSelection();
-				reloadList(service.getAllOffers());
+				/*offerList->clearSelection();
+				reloadList(service.getAllOffers());*/
+				offerTable->clearSelection();
+				reloadTable(service.getAllOffers());
 			}
 			catch (DuplicateItemException& die) {
 				std::stringstream ss{};
@@ -344,8 +457,10 @@ void GUI::connectSignalsAndSlots() {
 		inputDialog.exec();
 		auto text = inputDialog.textValue();
 		std::string sequence = text.toStdString();
-		offerList->clearSelection();
-		reloadList(service.findByName(sequence));
+		/*offerList->clearSelection();
+		reloadList(service.findByName(sequence));*/
+		offerTable->clearSelection();
+		reloadTable(service.findByName(sequence));
 	});
 
 	QObject::connect(filterByDestinationButton, &QPushButton::clicked, [&]() {
@@ -355,8 +470,10 @@ void GUI::connectSignalsAndSlots() {
 		inputDialog.exec();
 		auto text = inputDialog.textValue();
 		std::string destination = text.toStdString();
-		offerList->clearSelection();
-		reloadList(service.filterByDestination(destination));
+		/*offerList->clearSelection();
+		reloadList(service.filterByDestination(destination));*/
+		offerTable->clearSelection();
+		reloadTable(service.filterByDestination(destination));
 	});
 
 	QObject::connect(filterByPriceButton, &QPushButton::clicked, [&]() {
@@ -366,14 +483,17 @@ void GUI::connectSignalsAndSlots() {
 		inputDialog.exec();
 		auto text = inputDialog.textValue();
 		double price = text.toDouble();
-		offerList->clearSelection();
-		reloadList(service.filterByPrice(price));
+		/*offerList->clearSelection();
+		reloadList(service.filterByPrice(price));*/
+		offerTable->clearSelection();
+		reloadTable(service.filterByPrice(price));
 	});
 
 	QObject::connect(undoButton, &QPushButton::clicked, [&]() {
 		try {
 			service.undo();
-			reloadList(service.getAllOffers());
+			//reloadList(service.getAllOffers());
+			reloadTable(service.getAllOffers());
 		}
 		catch (ValidException& ve) {
 			std::stringstream ss{};
@@ -385,7 +505,8 @@ void GUI::connectSignalsAndSlots() {
 	QObject::connect(redoButton, &QPushButton::clicked, [&]() {
 		try {
 			service.redo();
-			reloadList(service.getAllOffers());
+			//reloadList(service.getAllOffers());
+			reloadTable(service.getAllOffers());
 		}
 		catch (ValidException& ve) {
 			std::stringstream ss{};
