@@ -1,15 +1,9 @@
 #include "GUI.h"
+#include "ReadOnlyWishlistGUI.h"
 #include "Exceptions.h"
-#include <QtWidgets//qerrormessage.h>
-#include <QtCore/qobject.h>
-#include <QtWidgets/qinputdialog.h>
-#include <QtWidgets/qboxlayout.h>
-#include <QtWidgets/qlabel.h>
+#include <QtWidgets>
 #include <sstream>
-#include <QtGui/qcolor.h>
-#include <StatisticsGUI.h>
-#include <QtWidgets/qmessagebox.h>
-#include <QtCore/qstringlist.h>
+#include <qdebug.h>
 
 GUI::GUI(Service& serv) : service{ serv } {
 	buildGUI();
@@ -29,6 +23,7 @@ void GUI::buildGUI() {
 	QHBoxLayout* bottomActionsLayout = new QHBoxLayout;
 	QVBoxLayout* actionsLayout = new QVBoxLayout;
 	QHBoxLayout* topRightLayout = new QHBoxLayout;
+	QHBoxLayout* wishlistBtnsLayout = new QHBoxLayout;
 	setLayout(horziontalLayout);
 
 	//Left side - button list
@@ -45,6 +40,13 @@ void GUI::buildGUI() {
 	left->setLayout(leftVerticalLayout);
 	leftVerticalLayout->addWidget(offerTable);
 	leftVerticalLayout->addWidget(leftButtonList);
+	QWidget* wishlistBtns = new QWidget;
+	wishlistBtns->setLayout(wishlistBtnsLayout);
+	wishlistBtnsLayout->addWidget(addToWishlistButton);
+	wishlistBtnsLayout->addWidget(clearWishlistButton);
+	wishlistBtnsLayout->addWidget(populateWishlistButton);
+	leftVerticalLayout->addWidget(wishlistBtns);
+	addToWishlistButton->setDisabled(true);
 
 	//Details - labels
 	QWidget* labels = new QWidget;
@@ -108,6 +110,7 @@ void GUI::buildGUI() {
 	topRightLayout->addWidget(statisticsButton);
 	topRightLayout->addStretch();
 	topRightLayout->addWidget(wishlistButton);
+	topRightLayout->addWidget(readOnlyWishlistButton);
 
 	//Right side
 	QWidget* right = new QWidget;
@@ -155,8 +158,7 @@ void GUI::buildGUI() {
 //	}
 //}
 
-void GUI::reloadTable(std::vector<Offer> offers) {
-	offerTable->clear();
+/*void GUI::reloadTable(std::vector<Offer> offers) {
 	std::vector<Offer> sorted = service.sortByTypeAndPrice();
 	offerTable->setRowCount(offers.size());
 	offerTable->setColumnCount(5);
@@ -220,51 +222,64 @@ void GUI::reloadTable(std::vector<Offer> offers) {
 		offerTable->setItem(row, 4, typeCount);
 		row++;
 	}
+}*/
+
+void GUI::reloadTable(std::vector<Offer> offers) {
+	model = new TableModel { offers };
+	offerTable->setModel(model);
+	QObject::connect(offerTable->selectionModel(), &QItemSelectionModel::selectionChanged, [this]() {
+		if (offerTable->selectionModel()->selectedIndexes().isEmpty()) {
+			addToWishlistButton->setDisabled(true);
+			removeButton->setDisabled(true);
+			modifyButton->setDisabled(true);
+			nameTextEdit->clear();
+			destinationTextEdit->clear();
+			typeTextEdit->clear();
+			priceTextEdit->clear();
+			return;
+		}
+		addToWishlistButton->setEnabled(true);
+		removeButton->setEnabled(true);
+		modifyButton->setEnabled(true);		const Offer& myOffer{ service.findById(offerTable->selectionModel()->selectedIndexes().at(0).data(Qt::UserRole).toInt()) };
+		nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
+		destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
+		typeTextEdit->setText(QString::fromStdString(myOffer.getType()));
+		std::stringstream ss{};
+		ss << myOffer.getPrice();
+		priceTextEdit->setText(QString::fromStdString(ss.str()));
+	});
 }
 
 void GUI::connectSignalsAndSlots() {
-	/*QObject::connect(offerList, &QListWidget::itemSelectionChanged, [&]() {
-		if (!offerList->selectedItems().isEmpty()) {
-			removeButton->setEnabled(true);
-			modifyButton->setEnabled(true);
-			const Offer& myOffer{ service.findById(offerList->selectedItems().first()->data(Qt::UserRole).toInt()) };
-			nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
-			destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
-			typeTextEdit->setText(QString::fromStdString(myOffer.getType()));
-			std::stringstream ss{};
-			ss << myOffer.getPrice();
-			priceTextEdit->setText(QString::fromStdString(ss.str()));
-		}
-		else {
-			removeButton->setDisabled(true);
-			modifyButton->setDisabled(true);
-			nameTextEdit->clear();
-			destinationTextEdit->clear();
-			typeTextEdit->clear();
-			priceTextEdit->clear();
-		}
-	});*/
 
-	QObject::connect(offerTable, &QTableWidget::itemSelectionChanged, [&]() {
-		if (!offerTable->selectedItems().isEmpty()) {
-			removeButton->setEnabled(true);
-			modifyButton->setEnabled(true);
-			const Offer& myOffer{ service.findById(offerTable->selectedItems().first()->data(Qt::UserRole).toInt()) };
-			nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
-			destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
-			typeTextEdit->setText(QString::fromStdString(myOffer.getType()));
+	QObject::connect(addToWishlistButton, &QPushButton::clicked, [&]() {
+		try {
+			int offerId = offerTable->selectionModel()->selectedIndexes().at(0).data(Qt::UserRole).toInt();
+			offerTable->clearSelection();
+			service.addToWishlist(offerId);
+		}
+		catch (DuplicateItemException& die) {
+			QErrorMessage err(this);
+			err.setMinimumSize(200, 100);
 			std::stringstream ss{};
-			ss << myOffer.getPrice();
-			priceTextEdit->setText(QString::fromStdString(ss.str()));
+			ss << die;
+			err.showMessage(QString::fromStdString(ss.str()));
+			err.exec();
 		}
-		else {
-			removeButton->setDisabled(true);
-			modifyButton->setDisabled(true);
-			nameTextEdit->clear();
-			destinationTextEdit->clear();
-			typeTextEdit->clear();
-			priceTextEdit->clear();
-		}
+	});
+
+	QObject::connect(clearWishlistButton, &QPushButton::clicked, [&]() {
+		service.emptyWishlist();
+	});
+
+	QObject::connect(populateWishlistButton, &QPushButton::clicked, [&]() {
+		QInputDialog inputDialog;
+		inputDialog.setMinimumSize(200, 100);
+		inputDialog.setLabelText("Introduceti numarul de oferte: ");
+		inputDialog.exec();
+		auto text = inputDialog.textValue();
+		int number = text.toInt();
+		service.populateWishlist(number);
 	});
 
 	QObject::connect(sortByNameButton, &QPushButton::clicked, [&]() {
@@ -290,7 +305,7 @@ void GUI::connectSignalsAndSlots() {
 	});
 
 	QObject::connect(removeButton, &QPushButton::clicked, [&]() {
-		offerId = offerTable->selectedItems().first()->data(Qt::UserRole).toInt();
+		offerId = offerTable->currentIndex().data(Qt::UserRole).toInt();
 		//offerList->clearSelection();
 		offerTable->clearSelection();
 		service.removeOffer(offerId);
@@ -299,7 +314,13 @@ void GUI::connectSignalsAndSlots() {
 
 	});
 
+	QObject::connect(readOnlyWishlistButton, &QPushButton::clicked, [&]() {
+		ReadOnlyWishlistGUI* wishGUI = new ReadOnlyWishlistGUI{ service };
+		wishGUI->show();
+	});
+
 	QObject::connect(wishlistButton, &QPushButton::clicked, [&]() {
+		WishlistGUI* wishGUI = new WishlistGUI{ service };
 		wishGUI->loadList(service.getAllOffers());
 		wishGUI->show();
 	});
@@ -383,7 +404,7 @@ void GUI::connectSignalsAndSlots() {
 
 	QObject::connect(modifyButton, &QPushButton::clicked, [&]() {
 		if (modifyButton->text() == "Modify") {
-			offerId = offerTable->selectedItems().first()->data(Qt::UserRole).toInt();
+			offerId = offerTable->currentIndex().data(Qt::UserRole).toInt();
 			modifyButton->setText("Ok");
 			nameTextEdit->setEnabled(true);
 			destinationTextEdit->setEnabled(true);
@@ -514,4 +535,62 @@ void GUI::connectSignalsAndSlots() {
 			QMessageBox::critical(this, tr("Error"), tr(ss.str().c_str()));
 		}
 	});
+}
+
+QVariant TableModel::data(const QModelIndex & index, int role) const
+{
+	if (role == Qt::DisplayRole) {
+		std::string str;
+		if (index.column() == 0) {
+			str = items.at(index.row()).getName();
+		}
+		else if (index.column() == 1) {
+			str = items.at(index.row()).getDestination();
+		}
+		else if (index.column() == 2) {
+			str = items.at(index.row()).getType();
+		}
+		else if (index.column() == 3) {
+			str = std::to_string(items.at(index.row()).getPrice());
+		}
+		return QString::fromStdString(str);
+	}
+	if (role == Qt::UserRole) {
+		return items.at(index.row()).getId();
+	}
+	return QVariant();
+}
+
+TableModel::TableModel(const std::vector<Offer>& offers) : QAbstractTableModel(), items{ offers } {
+}
+
+int TableModel::columnCount(const QModelIndex &) const {
+	return 4;
+}
+
+int TableModel::rowCount(const QModelIndex &) const {
+	return items.size();
+}
+
+QVariant TableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+	if (role == Qt::DisplayRole) {
+		if (orientation == Qt::Horizontal) {
+			if (section == 0) {
+				return QString("Nume").arg(section);
+			}
+			else if(section == 1) {
+				return QString("Destinatie").arg(section);
+			}
+			else if (section == 2) {
+				return QString("Tip").arg(section);
+			}
+			else if (section == 3) {
+				return QString("Pret").arg(section);
+			}
+		}
+		else {
+			return QString("%1").arg(section);
+		}
+	}
+	return QVariant();
 }

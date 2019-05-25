@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <vector>
+#include <algorithm>
 
 //Module for defining the entities in the aplication
 
@@ -147,5 +149,32 @@ public:
 
 	int getCount() const noexcept{
 		return count;
+	}
+};
+
+class Observer {
+private:
+public:
+	virtual void update() = 0;
+};
+
+class Observable {
+private:
+	std::vector<Observer*> observers;
+public:
+	virtual ~Observable() = default;
+
+	void addObserver(Observer* observer) {
+		observers.push_back(observer);
+	}
+
+	void removeSubscriber(Observer* observer) {
+		observers.erase(std::remove(observers.begin(), observers.end(), observer));
+	}
+
+	void notifyObservers() {
+		std::for_each(observers.begin(), observers.end(), [](Observer* obs) {
+			obs->update();
+		});
 	}
 };

@@ -2,7 +2,7 @@
 #include "Domain.h"
 #include <vector>
 
-class Wishlist {
+class Wishlist : public Observable {
 private:
 	std::vector<Offer> items;
 public:
@@ -26,6 +26,8 @@ public:
 
 	//Empties the wishlist
 	void emptyWishlist() noexcept;
+
+	void removeFromWishlist(Offer of);
 
 	//Populates the wishlist with a number of random offers from a given list of offers
 	void populateWishlist(int, std::vector<Offer>);

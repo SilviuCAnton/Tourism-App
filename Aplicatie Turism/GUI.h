@@ -1,11 +1,19 @@
 #pragma once
-#include <QtWidgets/qwidget.h>
 #include <Service.h>
-#include <QtWidgets/qlineedit.h>
-#include <QtWidgets/qlistwidget.h>
-#include <QtWidgets/qpushbutton.h>
-#include <WishlistGUI.h>
-#include <QtWidgets/qtablewidget.h>
+#include "WishlistGUI.h"
+#include "StatisticsGUI.h"
+#include <QtWidgets>
+
+class TableModel : public QAbstractTableModel {
+private:
+	std::vector<Offer> items;
+public:
+	TableModel(const std::vector<Offer>& offers);
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	int columnCount(const QModelIndex& = QModelIndex()) const override;
+	int rowCount(const QModelIndex& = QModelIndex()) const override;
+	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+};
 
 class GUI : public QWidget {
 public:
@@ -35,10 +43,15 @@ private:
 	QPushButton* redoButton = new QPushButton("Redo");
 	QPushButton* wishlistButton = new QPushButton("MyWishlist");
 	QPushButton* statisticsButton = new QPushButton("TypeStatistics");
+	QPushButton* readOnlyWishlistButton = new QPushButton("DrawWishlist");
+	QPushButton* addToWishlistButton = new QPushButton("AddToWishlist");
+	QPushButton* clearWishlistButton = new QPushButton("ClearWishlist");
+	QPushButton* populateWishlistButton = new QPushButton("PopulateWishlist");
 
 	/*List
 	QListWidget* offerList = new QListWidget;*/
-	QTableWidget* offerTable = new QTableWidget;
+	QTableView* offerTable = new QTableView;
+	TableModel* model;
 
 	//Text fields
 	QLineEdit* nameTextEdit = new QLineEdit;
@@ -46,6 +59,4 @@ private:
 	QLineEdit* typeTextEdit = new QLineEdit;
 	QLineEdit* priceTextEdit = new QLineEdit;
 
-	//WishlistGUI
-	WishlistGUI* wishGUI = new WishlistGUI{ service };
 };

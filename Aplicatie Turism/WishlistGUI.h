@@ -6,10 +6,12 @@
 #include <QtWidgets/qlistwidget.h>
 #include <QtWidgets/qpushbutton.h>
 
-class WishlistGUI : public QWidget {
+class WishlistGUI : public QWidget, public Observer {
 public:
 	WishlistGUI(Service& service);
+	~WishlistGUI();
 	void loadList(std::vector<Offer>);
+	void update() override;
 
 private:
 	Service& service;
@@ -18,8 +20,8 @@ private:
 	void connectSignalsAndSlots();
 
 	//List
-	QListWidget* offerList = new QListWidget;
-	QListWidget* wishList = new QListWidget;
+	QListView* offerList = new QListView;
+	QListView* wishList = new QListView;
 
 	//Buttons
 	QPushButton* addButton = new QPushButton("Add");

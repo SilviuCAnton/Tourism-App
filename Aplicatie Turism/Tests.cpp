@@ -10,8 +10,7 @@ namespace FunctionalityTest {
 	void testAdd() {
 		FileRepository myRepo{"testRepo.txt"};
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta1", "Bali", "type1", 500);
 		myService.addOffer("Oferta2", "Bali", "type1", 500);
 		assert(std::cout << myService.getAllOffers().at(0));
@@ -66,8 +65,7 @@ namespace FunctionalityTest {
 	void testModify() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta1", "Bali", "type1", 500);
 		myService.addOffer("Oferta2", "Bali", "type1", 500);
 		assert(myService.getAllOffers().size() == 2);
@@ -90,8 +88,7 @@ namespace FunctionalityTest {
 	void testRemove() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta1", "Bali", "type1", 500);
 		myService.addOffer("Oferta2", "Bali", "type1", 500);
 		myService.removeOffer(2);
@@ -110,8 +107,7 @@ namespace FunctionalityTest {
 	void testFind() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta1", "Bali", "type1", 250);
 		myService.addOffer("Oferta2", "Bali", "type2", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
@@ -129,8 +125,7 @@ namespace FunctionalityTest {
 	void testFilters() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta1", "Bali", "type1", 250);
 		myService.addOffer("Oferta2", "Bali", "type2", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
@@ -154,8 +149,7 @@ namespace FunctionalityTest {
 	void testSortings() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta2", "Bali", "type2", 250);
 		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
@@ -173,8 +167,7 @@ namespace FunctionalityTest {
 	void testWishlist() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta2", "Bali", "type2", 250);
 		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
@@ -205,6 +198,7 @@ namespace FunctionalityTest {
 		}
 
 		Wishlist wishlist2{};
+		Wishlist myWishlist{};
 		wishlist2.populateWishlist(3, myService.getAllOffers());
 		myWishlist = wishlist2;
 		assert(myWishlist == wishlist2);
@@ -223,8 +217,7 @@ namespace FunctionalityTest {
 	void testStatistics() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta2", "Bali", "type2", 250);
 		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
@@ -250,8 +243,7 @@ namespace FunctionalityTest {
 	void testUndo() {
 		FileRepository myRepo{ "testRepo.txt" };
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		myService.addOffer("Oferta2", "Bali", "type2", 250);
 		myService.addOffer("Oferta1", "Bali", "type1", 500.24);
 		myService.addOffer("Vacanta1", "New York", "type3", 6000);
@@ -322,8 +314,7 @@ namespace FunctionalityTest {
 	void testProbabilityRepo() {
 		ProbabilityRepo myRepo{1};
 		OfferValidator myValidator{};
-		Wishlist myWishlist{};
-		Service myService{ myRepo, myValidator, myWishlist };
+		Service myService{ myRepo, myValidator };
 		try {
 			myService.addOffer("Oferta2", "Bali", "type2", 250);
 			assert(false);
@@ -342,14 +333,13 @@ namespace FunctionalityTest {
 			myService.removeOffer(1);
 			assert(false);
 		}
-		catch (ValidException&) {
+		catch (InexistentItemException&) {
 			assert(true);
 		}
 
 		ProbabilityRepo myRepo1{ 0 };
 		OfferValidator myValidator1{};
-		Wishlist myWishlist1{};
-		Service myService1{ myRepo1, myValidator1, myWishlist1 };
+		Service myService1{ myRepo1, myValidator1 };
 
 		try {
 			myService1.addOffer("Oferta2", "Bali", "type2", 250);

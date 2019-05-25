@@ -8,8 +8,7 @@ int main(int argc, char *argv[])
 	FunctionalityTest::testAll();
 	OfferValidator myValidator{};
 	FileRepository myRepo{ "repository.txt" };
-	Wishlist myWishlist{};
-	Service myService{ myRepo, myValidator, myWishlist };
+	Service myService{ myRepo, myValidator };
 	GUI myGUI{ myService };
 	myGUI.show();
 	return a.exec();

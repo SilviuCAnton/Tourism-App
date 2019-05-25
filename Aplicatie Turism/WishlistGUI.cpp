@@ -5,14 +5,25 @@
 #include <QtWidgets/qlabel.h>
 #include <QtWidgets/qerrormessage.h>
 #include <Exceptions.h>
+#include "GUI.h"
 
-WishlistGUI::WishlistGUI(Service& serv) : service{ serv } {
+WishlistGUI::WishlistGUI(Service& serv) :Observer(), service{ serv } {
 	buildGUI();
 	connectSignalsAndSlots();
 	reloadList(service.getWishlist());
+	loadList(service.getAllOffers());
+	serv.subscribeToWishlist(this);
+	serv.addObserver(this);
+}
+
+WishlistGUI::~WishlistGUI() {
+	service.removeSubscriber(this);
+	service.unsubscribeFromWishlist(this);
 }
 
 void WishlistGUI::buildGUI() {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	QHBoxLayout* horziontalLayout = new QHBoxLayout;
 	QVBoxLayout* leftVerticalLayout = new QVBoxLayout;
 	QVBoxLayout* rightVerticalLayout = new QVBoxLayout;
@@ -89,31 +100,17 @@ void WishlistGUI::buildGUI() {
 	//Main panel
 	horziontalLayout->addWidget(left);
 	horziontalLayout->addWidget(right);
-	setWindowModality(Qt::ApplicationModal);
 }
 
 void WishlistGUI::loadList(std::vector<Offer> offers) {
-	offerList->clear();
-	for (const auto& offer : offers) {
-		QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(offer.getName()), offerList);
-		item->setData(Qt::UserRole, offer.getId());
-	}
-}
+	TableModel* model = new TableModel{ offers };
+	offerList->setModel(model);
 
-void WishlistGUI::reloadList(std::vector<Offer> offers) {
-	wishList->clear();
-	for (const auto& offer : offers) {
-		QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(offer.getName()), wishList);
-		item->setData(Qt::UserRole, offer.getId());
-	}
-}
-
-void WishlistGUI::connectSignalsAndSlots() {
-	QObject::connect(offerList, &QListWidget::itemSelectionChanged, [&]() {
-		if (!offerList->selectedItems().isEmpty()) {
+	QObject::connect(offerList->selectionModel(), &QItemSelectionModel::selectionChanged, [&]() {
+		if (!offerList->selectionModel()->selectedIndexes().isEmpty()) {
 			addButton->setEnabled(true);
 			wishList->clearSelection();
-			const Offer& myOffer{ service.findById(offerList->selectedItems().first()->data(Qt::UserRole).toInt()) };
+			const Offer& myOffer{ service.findById(offerList->selectionModel()->selectedIndexes().at(0).data(Qt::UserRole).toInt()) };
 			nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
 			destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
 			typeTextEdit->setText(QString::fromStdString(myOffer.getType()));
@@ -125,11 +122,21 @@ void WishlistGUI::connectSignalsAndSlots() {
 			addButton->setDisabled(true);
 		}
 	});
+}
 
-	QObject::connect(wishList, &QListWidget::itemSelectionChanged, [&]() {
-		if (!wishList->selectedItems().isEmpty()) {
+void WishlistGUI::update() {
+	loadList(service.getAllOffers());
+	reloadList(service.getWishlist());
+}
+
+void WishlistGUI::reloadList(std::vector<Offer> offers) {
+	TableModel* model = new TableModel{ offers };
+	wishList->setModel(model);
+
+	QObject::connect(wishList->selectionModel(), &QItemSelectionModel::selectionChanged, [&]() {
+		if (!wishList->selectionModel()->selectedIndexes().isEmpty()) {
 			offerList->clearSelection();
-			const Offer& myOffer{ service.findById(wishList->selectedItems().first()->data(Qt::UserRole).toInt()) };
+			const Offer& myOffer{ service.findById(wishList->selectionModel()->selectedIndexes().at(0).data(Qt::UserRole).toInt()) };
 			nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
 			destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
 			typeTextEdit->setText(QString::fromStdString(myOffer.getType()));
@@ -138,7 +145,10 @@ void WishlistGUI::connectSignalsAndSlots() {
 			priceTextEdit->setText(QString::fromStdString(ss.str()));
 		}
 	});
+}
 
+void WishlistGUI::connectSignalsAndSlots() {
+	
 	QObject::connect(populateButton, &QPushButton::clicked, [&]() {
 		QInputDialog inputDialog;
 		inputDialog.setMinimumSize(200, 100);
@@ -158,7 +168,7 @@ void WishlistGUI::connectSignalsAndSlots() {
 
 	QObject::connect(addButton, &QPushButton::clicked, [&]() {
 		try {
-			int offerId = offerList->selectedItems().first()->data(Qt::UserRole).toInt();
+			int offerId = offerList->selectionModel()->selectedIndexes().at(0).data(Qt::UserRole).toInt();
 			offerList->clearSelection();
 			service.addToWishlist(offerId);
 			reloadList(service.getWishlist());

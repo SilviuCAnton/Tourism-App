@@ -4,7 +4,7 @@
 #include "Exceptions.h"
 #include <fstream>
 
-Wishlist::Wishlist(const Wishlist& other) : items{ other.items } {
+Wishlist::Wishlist(const Wishlist& other) : Observable(), items{ other.items } {
 }
 
 Wishlist& Wishlist::operator=(const Wishlist& other) {
@@ -36,10 +36,19 @@ void Wishlist::addToWishlist(const Offer& offer) {
 		}
 	}
 	items.push_back(offer);
+	notifyObservers();
 }
 
 void Wishlist::emptyWishlist() noexcept {
 	items.clear();
+	notifyObservers();
+}
+
+void Wishlist::removeFromWishlist(Offer of) {
+	auto it = std::find(items.begin(), items.end(), of);
+	if (it != items.end()) {
+		items.erase(it);
+	}
 }
 
 void Wishlist::populateWishlist(int number, std::vector<Offer> offers) {
@@ -50,6 +59,7 @@ void Wishlist::populateWishlist(int number, std::vector<Offer> offers) {
 	const unsigned int seed{ static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()) };
 	std::shuffle(offers.begin(), offers.end(), std::default_random_engine(seed));
 	std::copy(offers.begin(), offers.begin() + number, std::back_inserter(items));
+	notifyObservers();
 }
 
 const std::vector<Offer>& Wishlist::getAll() const noexcept {

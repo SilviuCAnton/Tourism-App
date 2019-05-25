@@ -9,7 +9,7 @@
 
 //Module for the main functionalities of the app (GRASP Controller)
 
-class Service {
+class Service : public Observable {
 private:
 	Repository& repository;
 	OfferValidator validator;
@@ -22,7 +22,7 @@ public:
 	/*
 	Description: service constructor
 	*/
-	Service(Repository&, const OfferValidator&, const Wishlist&);
+	Service(Repository&, const OfferValidator&);
 
 	/*
 	Description: adds an offer given a name, a destination, a type and a price
@@ -150,5 +150,9 @@ public:
 
 	//Exports wishlist as a CSV file
 	void exportWishlistCSV(std::string saveName) const;
+
+	void subscribeToWishlist(Observer* obs);
+
+	void unsubscribeFromWishlist(Observer* obs);
 };
 

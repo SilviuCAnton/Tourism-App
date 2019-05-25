@@ -2,7 +2,7 @@
 #include "Exceptions.h"
 #include <algorithm>
 
-Service::Service(Repository& repository, const OfferValidator& validator, const Wishlist&) : repository{ repository }, validator{ validator }, wishlist{ wishlist }, undoIndex{ -1 } {
+Service::Service(Repository& repository, const OfferValidator& validator) : Observable(), repository{ repository }, validator{ validator }, undoIndex{ -1 } {
 }
 
 void Service::addOffer(std::string name, std::string destination, std::string type, double price) {
@@ -26,6 +26,7 @@ void Service::addOffer(std::string name, std::string destination, std::string ty
 
 	undoList.push_back(std::make_unique<UndoAdd>(repository, newOffer));
 	undoIndex = undoList.size() - 1;
+	notifyObservers();
 }
 
 void Service::modifyOffer(int id, std::string name, std::string destination, std::string type, double price) {
@@ -54,6 +55,7 @@ void Service::modifyOffer(int id, std::string name, std::string destination, std
 
 	undoList.push_back(std::make_unique<UndoModify>(repository, originalOffer, newOffer));
 	undoIndex = undoList.size() - 1;
+	notifyObservers();
 }
 
 void Service::removeOffer(int id) {
@@ -65,6 +67,7 @@ void Service::removeOffer(int id) {
 		}
 	}
 
+	Offer off = findById(id);
 	this->repository.deleteElement(id);
 
 	while (undoIndex != undoList.size() - 1) {
@@ -73,6 +76,8 @@ void Service::removeOffer(int id) {
 
 	undoList.push_back(std::make_unique<UndoRemove>(repository, myOffer));
 	undoIndex = undoList.size() - 1;
+	wishlist.removeFromWishlist(off);
+	notifyObservers();
 	}
 
 const std::vector<Offer>& Service::getAllOffers() const {
@@ -126,7 +131,11 @@ std::vector<Offer> Service::sortByName() const {
 	std::vector<Offer> copyOffers = offers;
 
 	std::sort(copyOffers.begin(), copyOffers.end(), [](const auto& offer1, const auto& offer2) {
-		return offer1.getName() <= offer2.getName();
+		std::string str1 = offer1.getName();
+		std::string str2 = offer2.getName();
+		std::transform(str1.begin(), str1.end(), str1.begin(), tolower);
+		std::transform(str2.begin(), str2.end(), str2.begin(), tolower);
+		return str1 <= str2;
 	});
 
 	return copyOffers;
@@ -138,7 +147,11 @@ std::vector<Offer> Service::sortByDestination() const {
 	std::vector<Offer> copyOffers = offers;
 
 	std::sort(copyOffers.begin(), copyOffers.end(), [](const auto& offer1, const auto& offer2) {
-		return offer1.getDestination() < offer2.getDestination();
+		std::string s1 = offer1.getDestination();
+		std::string s2 = offer2.getDestination();
+		std::transform(s1.begin(), s1.end(), s1.begin(), tolower);
+		std::transform(s2.begin(), s2.end(), s2.begin(), tolower);
+		return s1 < s2;
 	});
 
 	return copyOffers;
@@ -150,7 +163,11 @@ std::vector<Offer> Service::sortByTypeAndPrice() const {
 
 	std::sort(copyOffers.begin(), copyOffers.end(), [](const auto& offer1, const auto& offer2) {
 		if (offer1.getType() != offer2.getType()) {
-			return offer1.getType() <= offer2.getType();
+			std::string s1 = offer1.getType();
+			std::string s2 = offer2.getType();
+			std::transform(s1.begin(), s1.end(), s1.begin(), tolower);
+			std::transform(s2.begin(), s2.end(), s2.begin(), tolower);
+			return s1 < s2;
 		}
 		return offer1.getPrice() >= offer2.getPrice();
 	});
@@ -217,6 +234,7 @@ void Service::undo() {
 	}
 	undoList.at(undoIndex)->doUndo();
 	undoIndex--;
+	notifyObservers();
 }
 
 void Service::redo() {
@@ -225,8 +243,17 @@ void Service::redo() {
 	}
 	undoList.at(undoIndex + 1)->doRedo();
 	undoIndex++;
+	notifyObservers();
 }
 
 void Service::exportWishlistCSV(std::string saveName) const {
 	wishlist.exportCSV(saveName);
+}
+
+void Service::subscribeToWishlist(Observer * obs) {
+	wishlist.addObserver(obs);
+}
+
+void Service::unsubscribeFromWishlist(Observer * obs) {
+	wishlist.removeSubscriber(obs);
 }
