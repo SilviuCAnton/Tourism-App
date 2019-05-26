@@ -23,7 +23,6 @@ public:
 private:
 	Service& service;
 	void buildGUI();
-	//void reloadList(std::vector<Offer>);
 	void reloadTable(std::vector<Offer>);
 	void connectSignalsAndSlots();
 
@@ -49,8 +48,7 @@ private:
 	QPushButton* clearWishlistButton = new QPushButton("ClearWishlist");
 	QPushButton* populateWishlistButton = new QPushButton("PopulateWishlist");
 
-	/*List
-	QListWidget* offerList = new QListWidget;*/
+	//Table
 	QTableView* offerTable = new QTableView;
 	TableModel* model;
 
