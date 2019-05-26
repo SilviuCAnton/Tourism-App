@@ -594,16 +594,16 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 	if (role == Qt::DisplayRole) {
 		if (orientation == Qt::Horizontal) {
 			if (section == 0) {
-				return QString("Nume").arg(section);
+				return QString("Nume");
 			}
 			else if(section == 1) {
-				return QString("Destinatie").arg(section);
+				return QString("Destinatie");
 			}
 			else if (section == 2) {
-				return QString("Tip").arg(section);
+				return QString("Tip");
 			}
 			else if (section == 3) {
-				return QString("Pret").arg(section);
+				return QString("Pret");
 			}
 		}
 		else {
