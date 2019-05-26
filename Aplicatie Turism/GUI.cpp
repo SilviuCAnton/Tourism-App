@@ -225,7 +225,7 @@ void GUI::buildGUI() {
 }*/
 
 void GUI::reloadTable(std::vector<Offer> offers) {
-	model = new TableModel { offers };
+	model = new TableModel { offers, service.sortByTypeAndPrice() };
 	offerTable->setModel(model);
 	QObject::connect(offerTable->selectionModel(), &QItemSelectionModel::selectionChanged, [this]() {
 		if (offerTable->selectionModel()->selectedIndexes().isEmpty()) {
@@ -240,7 +240,8 @@ void GUI::reloadTable(std::vector<Offer> offers) {
 		}
 		addToWishlistButton->setEnabled(true);
 		removeButton->setEnabled(true);
-		modifyButton->setEnabled(true);		const Offer& myOffer{ service.findById(offerTable->selectionModel()->selectedIndexes().at(0).data(Qt::UserRole).toInt()) };
+		modifyButton->setEnabled(true);
+		const Offer& myOffer{ service.findById(offerTable->selectionModel()->selectedIndexes().at(0).data(Qt::UserRole).toInt()) };
 		nameTextEdit->setText(QString::fromStdString(myOffer.getName()));
 		destinationTextEdit->setText(QString::fromStdString(myOffer.getDestination()));
 		typeTextEdit->setText(QString::fromStdString(myOffer.getType()));
@@ -558,10 +559,27 @@ QVariant TableModel::data(const QModelIndex & index, int role) const
 	if (role == Qt::UserRole) {
 		return items.at(index.row()).getId();
 	}
+	if (role == Qt::BackgroundColorRole) {
+		int id = items.at(index.row()).getId();
+		int size = sorted.size();
+		int pos{ 0 };
+		while (id != sorted[pos].getId()) {
+			pos++;
+		}
+		if (pos < size / 3) {
+			return QColor(Qt::red);
+		}
+		else if (pos < size / 3 * 2) {
+			return QColor(Qt::green);
+		}
+		else {
+			return QColor(Qt::blue);
+		}
+	}
 	return QVariant();
 }
 
-TableModel::TableModel(const std::vector<Offer>& offers) : QAbstractTableModel(), items{ offers } {
+TableModel::TableModel(const std::vector<Offer>& offers, const std::vector<Offer>& sorted) : QAbstractTableModel(), items{ offers }, sorted{ sorted } {
 }
 
 int TableModel::columnCount(const QModelIndex &) const {

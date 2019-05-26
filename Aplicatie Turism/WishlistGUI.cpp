@@ -103,7 +103,7 @@ void WishlistGUI::buildGUI() {
 }
 
 void WishlistGUI::loadList(std::vector<Offer> offers) {
-	TableModel* model = new TableModel{ offers };
+	TableModel* model = new TableModel{ offers, service.sortByTypeAndPrice() };
 	offerList->setModel(model);
 
 	QObject::connect(offerList->selectionModel(), &QItemSelectionModel::selectionChanged, [&]() {
@@ -130,7 +130,7 @@ void WishlistGUI::update() {
 }
 
 void WishlistGUI::reloadList(std::vector<Offer> offers) {
-	TableModel* model = new TableModel{ offers };
+	TableModel* model = new TableModel{ offers, service.sortByTypeAndPrice() };
 	wishList->setModel(model);
 
 	QObject::connect(wishList->selectionModel(), &QItemSelectionModel::selectionChanged, [&]() {
