@@ -7,6 +7,8 @@
 
 GUI::GUI(Service& serv) : service{ serv } {
 	buildGUI();
+	model = new TableModel{ service.getAllOffers(), service.sortByTypeAndPrice() };
+	offerTable->setModel(model);
 	connectSignalsAndSlots();
 	reloadTable(service.getAllOffers());
 }
@@ -131,8 +133,11 @@ void GUI::buildGUI() {
 }
 
 void GUI::reloadTable(std::vector<Offer> offers) {
-	model = new TableModel { offers, service.sortByTypeAndPrice() };
-	offerTable->setModel(model);
+	model->reload(offers);
+}
+
+void GUI::connectSignalsAndSlots() {
+
 	QObject::connect(offerTable->selectionModel(), &QItemSelectionModel::selectionChanged, [this]() {
 		if (offerTable->selectionModel()->selectedIndexes().isEmpty()) {
 			addToWishlistButton->setDisabled(true);
@@ -155,9 +160,6 @@ void GUI::reloadTable(std::vector<Offer> offers) {
 		ss << myOffer.getPrice();
 		priceTextEdit->setText(QString::fromStdString(ss.str()));
 	});
-}
-
-void GUI::connectSignalsAndSlots() {
 
 	QObject::connect(addToWishlistButton, &QPushButton::clicked, [&]() {
 		try {
@@ -466,6 +468,13 @@ QVariant TableModel::data(const QModelIndex & index, int role) const
 }
 
 TableModel::TableModel(const std::vector<Offer>& offers, const std::vector<Offer>& sorted) : QAbstractTableModel(), items{ offers }, sorted{ sorted } {
+}
+
+void TableModel::reload(std::vector<Offer> newItems) {
+	items = newItems;
+	auto top = createIndex(0, 0);
+	auto bottom = createIndex(newItems.size(), 4);
+	dataChanged(top, bottom);
 }
 
 int TableModel::columnCount(const QModelIndex &) const {

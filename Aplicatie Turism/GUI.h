@@ -10,6 +10,7 @@ private:
 	std::vector<Offer> sorted;
 public:
 	TableModel(const std::vector<Offer>& offers, const std::vector<Offer>& sorted);
+	void reload(std::vector<Offer> newItems);
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int columnCount(const QModelIndex& = QModelIndex()) const override;
 	int rowCount(const QModelIndex& = QModelIndex()) const override;
